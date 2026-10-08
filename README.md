@@ -34,7 +34,7 @@ Click a block or plot to inspect it, drag to pan, and scroll to zoom. The neighb
 - **Resource trade-offs:** construction costs, facility upkeep, political points, financing, and heatwave response compete for limited resources.
 - **Explainable outcomes:** the heatwave report records each block's residents and indoor/outdoor exposure at the time of the event.
 - **English and Chinese:** interface, policy cards, advisor feedback, and historical reports can switch languages without restarting.
-- **Local saves:** progress is automatically saved when a turn ends. Saves belong to the current browser and site; they do not sync between devices.
+- **Local saves:** actions, turn endings, and reflection answers save automatically. Saves belong to the current browser and site; they do not sync between devices.
 
 ### Serious-game AI
 
