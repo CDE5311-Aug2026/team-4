@@ -1,5 +1,12 @@
 node_modules/
 dist/
-.openai/
+qa/
 *.log
-.DS_Store
+.pnpm-store/
+gdd-source.txt
+published-site/
+.sites-runtime/
+.openai/
+figma-export/
+github-delivery/
+*.zip
