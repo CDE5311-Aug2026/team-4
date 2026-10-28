@@ -1,120 +1,89 @@
-# HDB Eco Community
+# Downstairs · 99 Years of Everyday Life
 
-## Current Downstairs demo / 最新《楼下》demo
+A playable English edition of the HDB neighbourhood game prototype. Place the entire HDB neighbourhood on a vacant lot, then enter it to interact with residents, buildings and facilities.
 
-The current English **Downstairs · 99 Years of Everyday Life** prototype is in **[demos/downstairs-en](demos/downstairs-en)**. It includes the placeable interactive HDB neighbourhood, construction fireworks, and opening/closing letter envelopes.
-
-**[Play Downstairs online](https://downstairs-sunset-en.awaregiant.chatgpt.site)** · **[Run and edit this demo](demos/downstairs-en/README.md#team-development)**
-
-```sh
-git clone https://github.com/CDE5311-Aug2026/team-4.git
-cd team-4/demos/downstairs-en
-npm start
-```
-
-Open `http://127.0.0.1:4193/`. No dependency installation or API key is required. If you already cloned this repository, run `git pull` before opening the demo directory. The existing HDB Eco Community prototype below remains a separate project.
-
----
-
-A browser-based serious game about making an existing HDB neighbourhood greener, cooler, and financially sustainable. Plan public green spaces, retrofit residential blocks, and use policy cards before a heatwave and the final project inspection.
-
-**[Play online](https://hdb-eco-community.bluebirdstory.chatgpt.site/)** · **[Quick play guide / 简明游玩指南](docs/PLAY_GUIDE.md)** · **[Design notes (中文)](docs/DESIGN_NOTES_ZH.md)**
-
-The game starts in **English**. Switch to **中文** at any time using the language button; your browser remembers your choice.
-
-![HDB Eco Community gameplay: an irregular 3D neighbourhood, community goals, policy cards, and the AI advisor](docs/images/gameplay.png)
-
-## How to play
-
-1. Choose a strategy, then inspect the residential blocks and available plots on the 3D map.
-2. Green residential blocks and place parks or shaded walkways. Check the cost and newly served residents before confirming construction.
-3. Use policy cards when their benefits fit your plan. Cards spend political points; ordinary construction spends funds.
-4. Open **AI advisor** to compare feasible plans and explore why they produce different outcomes.
-5. Press **End turn** to settle income, upkeep, and scheduled repayments. Prepare for the heatwave at the **end of turn 6**.
-6. Meet all three inspection goals by the **end of turn 8**:
-
-| Goal | Required result |
-| --- | --- |
-| Public green space coverage | At least **70%** of residents |
-| Greened HDB blocks | At least **4** blocks |
-| Community livability | At least **75** |
-
-If the inspection is missed, the game offers two remedial turns. Parks and walkways provide public coverage; rooftop greening benefits its own block. Overlapping public services count each resident only once.
-
-Click a block or plot to inspect it, drag to pan, and scroll to zoom. The neighbourhood roster is an alternative way to select sites. Use the **Coverage** and **Heat risk** layers to plan, and open **Funds** to review operating costs and debt. See the [play guide](docs/PLAY_GUIDE.md) for a short first-session walkthrough.
-
-## Features and learning focus
-
-- **Procedural Three.js neighbourhood:** varied building orientations, curved roads, landscaping, selectable plots, and visible construction changes.
-- **Spatial planning:** population-weighted coverage, service overlap, and construction previews make location matter.
-- **Resource trade-offs:** construction costs, facility upkeep, political points, financing, and heatwave response compete for limited resources.
-- **Explainable outcomes:** the heatwave report records each block's residents and indoor/outdoor exposure at the time of the event.
-- **English and Chinese:** interface, policy cards, advisor feedback, and historical reports can switch languages without restarting.
-- **Local saves:** actions, turn endings, and reflection answers save automatically. Saves belong to the current browser and site; they do not sync between devices.
-
-### Serious-game AI
-
-The **AI advisor** uses local, bounded planning search and the actual game rules to compare legal sequences of up to three actions in the current turn. Players can choose a balanced, coverage, heat, or finance focus and inspect changes in coverage, served residents, upkeep, cash, and debt.
-
-Recommendations explain their consequences. **Inspect first step** selects a target or opens a policy dialog; players still confirm the action themselves. Adaptive reflection questions provide feedback on the current planning problem and record practice answers separately from the city score.
-
-This is a local planning AI, with **no external model, API key, or paid service required**. It does not predict future card draws, simulate future turn settlements, or guarantee an optimal complete-game strategy. The learning questions are practice feedback; learning effectiveness still needs evaluation with players.
-
-## Run locally
-
-Install **Node.js 22 or newer** and use a WebGL-capable browser.
+**This is the default project in this repository**, matching the [shared English demo](https://downstairs-sunset-en.awaregiant.chatgpt.site), with construction fireworks and opening/closing envelopes.
 
 ```sh
 git clone https://github.com/CDE5311-Aug2026/team-4.git
 cd team-4
-corepack enable
-pnpm install --frozen-lockfile
-pnpm dev
+npm start
 ```
 
-Open the local URL printed by the development server, normally `http://127.0.0.1:5173/`. Access to this repository is required to clone it while it remains private.
+Open `http://127.0.0.1:4193/`. No dependency installation is needed. If you already have this repository, run `git pull`, then `npm start` from its root. `npm run dev` also starts this demo.
 
-The project pins `pnpm` in `package.json`. If Corepack is unavailable, install that pnpm version using `npm install --global pnpm@11.25.0`. Alternatively, `npm install` and `npm run dev` can run the project; pnpm is preferred for reproducing the committed lockfile.
+## Play offline
+
+Open `index.html` in a browser that supports WebGL 2. All scripts and assets are included; no internet connection, installation, or API key is required.
+
+With Node.js installed, run `npm start` and visit http://127.0.0.1:4193/ . After editing `scene-source.mjs`, run `npm run build` to rebuild the scene bundle. No dependency installation is needed.
+
+## Team development
+
+The repository root contains the current English demo, including construction fireworks and animated letter envelopes. The earlier HDB Eco Community project is preserved under [`legacy/hdb-eco-community/`](legacy/hdb-eco-community/); it is a separate prototype.
+
+### Start
+
+Install Node.js 22 or newer, then run from this directory:
 
 ```sh
-pnpm test       # Run the game, language, and advisor tests
-pnpm build      # Generate the production site in dist/
-pnpm preview    # Preview the production build locally
+npm start
 ```
 
-The game needs no environment variables or backend. Its scene, icons, and policy illustrations are generated in code; gameplay does not depend on remote images or fonts.
+Open `http://127.0.0.1:4193/`. There is no install step; the runtime and scene-building helper use bundled files and Node built-ins. You can also open `index.html` directly for offline play. Refresh the browser after editing.
 
-## Deployment
+### What to edit
 
-The current public build is available at [hdb-eco-community.bluebirdstory.chatgpt.site](https://hdb-eco-community.bluebirdstory.chatgpt.site/). Uploading to this repository does not automatically update that hosted build.
-
-For another static host, run `pnpm build` and publish the contents of `dist/`. The default build assumes hosting at the domain root. For a subdirectory such as GitHub Pages at `/team-4/`, build with the appropriate base path:
-
-```sh
-pnpm build --base=/team-4/
-```
-
-No hosting account, deployment configuration, or API credentials are included in the source.
-
-## Project structure
-
-| Path | Purpose |
+| File | Responsibility |
 | --- | --- |
-| `src/game.js` | Game state, policies, construction, finance, heatwave, and inspection rules |
-| `src/layout.js` | Shared spatial layout and migration of older saves |
-| `src/scene.js` | Procedural Three.js scene, picking, overlays, and map controls |
-| `src/main.js`, `src/style.css` | User interface, dialogs, responsive layout, and saving |
-| `src/ui-locale.js`, `src/engine-locale.js` | Interface and game-content translations |
-| `src/advisor.js`, `src/advisor-view.js` | Planning search, evidence, and adaptive reflection |
-| `src/icons.js`, `public/` | Icons, illustrations, and favicon |
-| `tests/` | Automated rule, localization, and advisor checks |
-| `docs/PLAY_GUIDE.md` | Simple English and Chinese play introduction |
-| `docs/DESIGN_NOTES_ZH.md` | Detailed design analysis and prototype rules |
+| `app.js` | Interface, dialogs, player actions, letter-envelope state and optional local saves |
+| `engine.js` | Game rules, cards, residents, letters and ending |
+| `scene-source.mjs` | Three.js neighbourhood, click targets, camera and construction fireworks |
+| `style.css`, `scene.css`, `english.css` | Layout and scene/interface styling |
+| `envelope.css` | Layered envelope, hinged flap and paper animation |
+| `art.js` | Facility art, portraits and memory illustrations |
+| `vendor/` | Bundled Three.js source and its MIT licence |
+| `scripts/build-scene.cjs` | Offline scene bundler |
 
-Built with **Three.js 0.180.0**, **Vite 6.3.6**, and JavaScript modules. The test suite contains **28 passing checks**, including legal construction, deduplicated coverage, heatwave snapshots, financing, recovery, save migration, bilingual output, and reproducible advisor evidence. The production build has also been verified.
+After changing `scene-source.mjs`, rebuild and commit both source and bundle:
 
-## Scope
+```sh
+npm run build
+```
 
-This prototype implements one playable neighbourhood-renewal scenario based on *HDB Eco Community GDD V1.0*. The concept illustration informed its atmosphere and information hierarchy. Energy simulation, clean-power systems, stormwater scenarios, new housing, and a multi-stage campaign are future work.
+Do not edit `scene.bundle.js` directly. Other JavaScript and CSS changes need only a browser refresh. The build uses a locally installed esbuild if available, otherwise the included offline bundler; it needs no machine-specific paths.
 
-Costs, service radii, and heat effects are game-balance parameters, not measurements or official HDB planning guidance. The game is a student project and is not an official HDB product. The prototype's design analysis is documented in [中文设计说明](docs/DESIGN_NOTES_ZH.md).
+### Collaborate
+
+Pull the latest `main`, create a branch for your changes, and open a pull request back to `main`. Edit the files at the repository root for this prototype. The former `demos/downstairs-en/` copy has been promoted here, so there is one current source location. No API keys or hosting credentials are needed. Browser saves stay on each player's device.
+
+To work on the earlier prototype, enter `legacy/hdb-eco-community/` and follow its existing installation and run instructions there.
+
+The shared playable build is [downstairs-sunset-en.awaregiant.chatgpt.site](https://downstairs-sunset-en.awaregiant.chatgpt.site). GitHub commits do not automatically redeploy that site.
+
+## How to play
+
+1. Choose a vacant lot and place the entire HDB neighbourhood. This opening step does not use an action.
+2. Enter the neighbourhood. Click the building, residents' window markers, or facilities. Drag to rotate; use the wheel or buttons to zoom. Overview returns to the land view.
+3. Read and answer the community letters. Replies do not use actions.
+4. Each round gives you two actions: Build a facility, issue a Policy, or Visit a household. Select a facility, then click a space inside the neighbourhood to build it.
+5. Once both actions are used, end the decade. Ten rounds cover a 99-year lease and end with a factual reflection on your decisions.
+6. Each of the four badges holds up to three stars. Three, six, and nine total stars unlock one additional facility space each. Built facilities normally cannot be removed.
+7. First visits reveal access barriers, collect a memory photo, and unlock residents' requests. Read a visited household's current situation for free, or spend an action on another visit.
+
+Settings includes instructions, optional sound, optional saving on this device, the community log, JSON export, and restarting.
+
+## Included
+
+- Ten rounds, twenty actions, four badges, seven facility spaces.
+- Seventeen facility/policy cards, five households, seventeen types of scheduled or conditional letters.
+- Access barriers, housing restrictions, fading and restored photos, follow-up letters, and a factual ending.
+- A placeable HDB scene with flats, corridors, a void deck, courtyard, roof, residents, and live facility construction.
+- Warm pixel-style rendering, native scene hit testing, camera controls, English scene signs, portraits, and memory illustrations.
+- Desktop and phone layouts, keyboard-accessible controls and dialogs.
+
+## Prototype notes
+
+The English edition preserves the original rules and scene interactions. The reference image's money system is not part of this proposal version. The Planning Assistant and ending use local rules and factual templates; they do not call an AI service. Saving is off by default and writes to browser storage only when enabled. English progress is separate from Chinese progress.
+
+The original generated image is retained as a reference asset; it is not used as the game world's background. The game world uses independent Three.js objects. Three.js and its MIT licence are included under `vendor/`.

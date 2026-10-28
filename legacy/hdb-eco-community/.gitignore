@@ -1,0 +1,12 @@
+node_modules/
+dist/
+qa/
+*.log
+.pnpm-store/
+gdd-source.txt
+published-site/
+.sites-runtime/
+.openai/
+figma-export/
+github-delivery/
+*.zip

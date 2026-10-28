@@ -1,9 +1,0 @@
-{
-  "name": "downstairs-playable-demo-en",
-  "version": "2.1.0",
-  "private": true,
-  "scripts": {
-    "start": "node server.cjs",
-    "build": "node scripts/build-scene.cjs"
-  }
-}

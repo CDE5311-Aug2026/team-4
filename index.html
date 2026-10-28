@@ -1,14 +1,56 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#185b48" />
-    <title>HDB · Eco Community</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#171f31">
+  <meta name="description" content="Downstairs: 99 years in an HDB neighbourhood. A warm, interactive community-building game prototype.">
+  <title>Downstairs · 99 Years of Everyday Life</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="scene.css">
+  <link rel="stylesheet" href="english.css">
+  <link rel="stylesheet" href="envelope.css">
+</head>
+<body>
+  <div id="game" class="game">
+    <div id="world-scene" aria-label="Placeable, interactive HDB neighbourhood"><div id="world-error" hidden></div></div>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <div id="fireflies" aria-hidden="true"></div>
+    <header class="brand"><div class="edition">99 YEARS OF EVERYDAY LIFE</div><h1>Downstairs</h1><p>A little town.<br>A lifetime together.</p><span class="demo-tag">PLAYABLE PROTOTYPE · ENGLISH EDITION</span></header>
+    <div class="top-center">
+      <div id="turn-hud" class="panel turn-hud"></div>
+      <div class="time-track" id="time-track"></div>
+    </div>
+    <div id="badges" class="badges" aria-label="Community achievement badges"></div>
+    <button class="settings icon-button panel" id="settings-button" title="How to play and settings" aria-label="How to play and settings">⚙</button>
+    <aside class="left-column">
+      <section class="panel toolbox">
+        <nav class="tabs" aria-label="Action type"><button class="tab active" data-tab="facility"><span>⚒</span> Build</button><button class="tab" data-tab="policy"><span>▤</span> Policy</button><button class="tab" data-tab="visit"><span>⌕</span> Visit</button></nav>
+        <div class="tool-caption" id="tool-caption"></div>
+        <div id="cards" class="cards"></div>
+        <div id="tool-footer" class="tool-footer"></div>
+      </section>
+      <section class="panel letter-panel" id="letter-panel" aria-label="Community letters"></section>
+    </aside>
+    <main class="map" aria-label="HDB neighbourhood and building spaces">
+      <div class="map-caption" id="world-caption"><span class="map-dot"></span>SUNSET NEIGHBOURHOOD <b> / </b> Site overview</div>
+      <div id="map-instruction" class="map-instruction"></div>
+      <div id="world-hover" class="world-hover" hidden></div>
+      <div class="world-controls" id="world-controls"><button id="overview-button" title="Return to site overview">⌂ Overview</button><button id="enter-button" hidden>Enter ↗</button><button id="rotate-left" title="Rotate scene left" aria-label="Rotate scene left">↶</button><button id="rotate-right" title="Rotate scene right" aria-label="Rotate scene right">↷</button><button id="zoom-out" title="Zoom out" aria-label="Zoom out">−</button><button id="zoom-in" title="Zoom in" aria-label="Zoom in">＋</button><button id="reset-camera" title="Reset camera" aria-label="Reset camera">◎</button></div>
+      <div id="placement-card" class="placement-card" hidden></div>
+      <div id="plots" class="plots"></div>
+      <div id="map-note" class="map-note"></div>
+      <div class="round-control panel"><div id="round-hint"></div><button id="next-round" class="gold-button">End this decade <span>→</span></button></div>
+    </main>
+    <aside class="right-column">
+      <section class="panel residents-panel"><div class="panel-title"><span>♟</span> Neighbours <small id="visited-count"></small></div><div id="residents" class="residents"></div><div class="residents-caption">Go and see the lives behind the numbers.</div></section>
+      <section class="panel advisor-panel"><div class="panel-title"><span>▣</span> Planning Assistant <small>RULES</small></div><div class="advisor-paper"><span class="robot">▣</span><div><p id="advisor"></p><small>Online survey: 3 of 5 households<br>The Lin Family, Aisyah’s Family and Mei’s Family</small></div></div></section>
+      <section class="panel memories-panel"><div class="panel-title"><span>▧</span> Memory Wall <small id="photo-count"></small><button id="memory-button" title="Open Memory Wall" aria-label="Open Memory Wall">↗</button></div><div id="memories" class="memories"></div><div class="memory-caption">Some changes stay in the photographs.</div></section>
+    </aside>
+    <footer class="bottom-note"><span>⌂</span> Behind every star, someone is living their life.</footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="modal" class="modal" hidden><div class="modal-shade"></div><section class="modal-dialog panel" role="dialog" aria-modal="true" tabindex="-1"><button id="modal-close" class="modal-close" aria-label="Close">×</button><div id="modal-body"></div></section></div>
+  <script src="engine.js"></script><script src="art.js"></script><script src="app.js"></script><script src="scene.bundle.js"></script>
+</body>
 </html>
