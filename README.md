@@ -1,5 +1,21 @@
 # HDB Eco Community
 
+## Current Downstairs demo / 最新《楼下》demo
+
+The current English **Downstairs · 99 Years of Everyday Life** prototype is in **[demos/downstairs-en](demos/downstairs-en)**. It includes the placeable interactive HDB neighbourhood, construction fireworks, and opening/closing letter envelopes.
+
+**[Play Downstairs online](https://downstairs-sunset-en.awaregiant.chatgpt.site)** · **[Run and edit this demo](demos/downstairs-en/README.md#team-development)**
+
+```sh
+git clone https://github.com/CDE5311-Aug2026/team-4.git
+cd team-4/demos/downstairs-en
+npm start
+```
+
+Open `http://127.0.0.1:4193/`. No dependency installation or API key is required. If you already cloned this repository, run `git pull` before opening the demo directory. The existing HDB Eco Community prototype below remains a separate project.
+
+---
+
 A browser-based serious game about making an existing HDB neighbourhood greener, cooler, and financially sustainable. Plan public green spaces, retrofit residential blocks, and use policy cards before a heatwave and the final project inspection.
 
 **[Play online](https://hdb-eco-community.bluebirdstory.chatgpt.site/)** · **[Quick play guide / 简明游玩指南](docs/PLAY_GUIDE.md)** · **[Design notes (中文)](docs/DESIGN_NOTES_ZH.md)**
