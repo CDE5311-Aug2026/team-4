@@ -1,0 +1,14 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..','dist'),html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const assets=[...html.matchAll(/(?:src|href)="([^"]+)"/g)].map(m=>m[1]).filter(x=>!x.startsWith('http'));
+for(const file of assets)assert(fs.existsSync(path.join(root,file)),'Missing '+file);
+const ids=[...html.matchAll(/id="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'unique ids');
+const css=fs.readFileSync(path.join(root,'style.css'),'utf8');
+assert(css.includes('#game #world-scene{position:absolute;inset:0;width:100%;height:100%'),'full-window scene');
+const experience=fs.readFileSync(path.join(root,'experience.css'),'utf8');
+assert(experience.includes('.ui-collapsed .world-feed'),'collapsible overlays');
+assert(experience.includes('@media(max-width:560px)'),'small-screen overlay access');
+assert(experience.includes('.library-grid'),'full card collection is accessible');
+assert(html.includes('id="mailbox"')&&html.includes('id="placement-panel"'),'separate mail and spatial placement');
+assert(!css.includes('transform:scale('),'text containers are not scaled');
+console.log('PASS local assets, unique ids, full-window scene, collapsible overlays and unscaled interface text.');
