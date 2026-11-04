@@ -21,5 +21,36 @@
   else{body='<rect x="183" y="102" width="82" height="58" fill="#d6bc93"/><rect x="190" y="96" width="68" height="8" fill="#8b6656"/><g class="paper-move"><path d="M207 82h40v40h-40Z" fill="#f6e8cb"/><path d="M215 92h24m-24 9h24m-24 9h16" stroke="#9c8c78" stroke-width="3"/></g>'+person(kind==='housing'||kind==='appeal'?'rahman':people[0]||'zhang',145,164,1,'talk')+person('zhang',302,164,1,'wave');}
   return `<div class="pixel-scene scene-${esc(kind)} ${options.complete?'is-complete':''}" data-scene="${esc(kind)}"><svg viewBox="0 0 440 210" role="img" aria-label="${esc(options.label||'')}">${base}${body}</svg><span class="scene-grain" aria-hidden="true"></span></div>`;
  }
- root.CM_VISUAL={scene,person};
+ const settings={
+  chen:{place:'corridor',wall:'#c6a28b',floor:'#967970',pose:'wave'},
+  students:{place:'stairs',wall:'#7e9899',floor:'#617c80',pose:'wave'},
+  ali:{place:'door',wall:'#a68d97',floor:'#7e7382',pose:'talk'},
+  rahman:{place:'window',wall:'#bd967e',floor:'#8f7466',pose:'talk'},
+  lin:{place:'garden',wall:'#b8a898',floor:'#827e69',pose:'wave'},
+  kumar:{place:'door',wall:'#9c9f91',floor:'#778778',pose:'talk'},
+  huang:{place:'stall',wall:'#c18d72',floor:'#947166',pose:'wave'},
+  zhang:{place:'notice',wall:'#a5a795',floor:'#728483',pose:'talk'}
+ };
+ const picture={
+  corridor:'<path d="M12 31h89v64H12Z" fill="#e4ba9a"/><path d="M12 81l18-20 17 10 20-26 34 25v25H12Z" fill="#849b8c"/><path d="M9 29h94v4H9Zm0 64h94v6H9Zm40-62h5v64h-5Z" fill="#665d5d"/><path d="M5 124h109v5H5Zm3 5h4v34H8Zm42 0h4v34h-4Zm54 0h4v34h-4Z" fill="#e2d2ae"/><path d="M95 151h21l-4 16H99Z" fill="#af6d54"/><path d="M104 152v-14l-8-6m8 11 8-12" stroke="#548272" stroke-width="4" fill="none"/>',
+  stairs:'<path d="M0 149h28v-11h24v-11h24v-11h25v-11h27v56H0Z" fill="#9ab0a2"/><path d="M0 151h29v-11h24v-11h24v-11h25v-11h26" fill="none" stroke="#ced4b1" stroke-width="4"/><path d="M0 120l127-65m-100 53v29m41-49v32m40-52v33" fill="none" stroke="#425e66" stroke-width="4"/><path d="M11 25h35v43H11Z" fill="#b7bca0"/><path d="M16 31h25v31H16Z" fill="#6c8791"/>',
+  door:'<path d="M21 36h52v120H21Z" fill="#66505a"/><path d="M26 41h42v115H26Z" fill="#8c7274"/><path d="M30 45h33v49H30Z" fill="#997c76"/><path d="M57 98h7v3h-7Z" fill="#e4bb81"/><path d="M22 155h51l10 8H13Z" fill="#c5ab8e"/><path d="M93 47h19v28H93Z" fill="#d2b391"/><path d="M98 51h9v20h-9Z" fill="#b27e64"/>',
+  window:'<path d="M21 25h85v70H21Z" fill="#e5c09b"/><path d="M28 32h71v56H28Z" fill="#e2ad87"/><path d="M28 81l19-19 16 10 17-15 19 15v16H28Z" fill="#8b9b90"/><path d="M62 31h5v60h-5ZM25 88h77v7H25Z" fill="#876e67"/><path d="M20 24h10v58H17Zm86 0H96v58h13Z" fill="#b37363"/><path d="M0 130h35v5H0Zm4 5h5v23H4Zm21 0h5v23h-5Z" fill="#715e64"/>',
+  garden:'<path d="M0 64h128v68H0Z" fill="#a5b596"/><path d="M10 52h98v52H10Z" fill="#cbb99a"/><path d="M9 51h101v6H9Zm7 5h5v57h-5Zm82 0h5v57h-5Z" fill="#6a8273"/><path d="M0 125h39v32H0Zm91 1h37v26H91Z" fill="#a97761"/><path d="M0 121h39v7H0Zm91 0h37v7H91Z" fill="#c19071"/><path d="M4 118h30v5H4Zm5-15h8v17H9Zm15 5h7v13h-7Zm71 3h26v11H95Z" fill="#507f6a"/>',
+  stall:'<path d="M0 27h128v58H0Z" fill="#765957"/><path d="M0 25h128v13H0Z" fill="#dfbc8a"/><path d="M5 43h118v13H5Z" fill="#a56758"/><path d="M9 61h113v31H9Z" fill="#4e6065"/><path d="M13 75h102v5H13Z" fill="#9a7463"/><path d="M18 69h9v6h-9Zm12-1h9v7h-9Zm56 1h8v6h-8Zm12-3h7v9h-7Z" fill="#eed6a6"/><path d="M3 91h123v7H3Zm4 7h115v30H7Z" fill="#ceaa87"/><path d="M11 102h105v21H11Z" fill="#af7866"/>',
+  notice:'<path d="M15 26h100v61H15Z" fill="#637d79"/><path d="M19 30h92v53H19Z" fill="#47656a"/><path d="M26 37h23v25H26Zm30 6h22v30H56Zm29-5h18v20H85Z" fill="#dec99e"/><path d="M30 43h15m-15 5h13m17 1h14m-14 5h12m14-10h12" stroke="#a2957c" stroke-width="2"/><path d="M1 124h44v6H1Zm4 6h5v21H5Zm32 0h4v21h-4Z" fill="#887065"/>'
+ };
+ function residentScene(id,label){
+  const setting=settings[id]||settings.chen;
+  const people=id==='rahman'?person(id,46,152,1.21,'talk')+person('nur',86,153,1.08,'wave'):
+   id==='students'?person(id,50,150,1.32,'wave')+person('student-two',88,151,1.12,'talk'):
+   person(id,64,152,1.48,setting.pose);
+  return '<div class="resident-art"><svg viewBox="0 0 128 176" role="img" aria-label="'+esc(label)+'">'+
+   '<rect width="128" height="176" fill="'+setting.wall+'"/><path d="M0 133h128v43H0Z" fill="'+setting.floor+'"/>'+
+   '<path d="M0 149h128m-128 15h128m-83 12 7-42m30 42-7-42" stroke="#ede4b4" stroke-opacity=".25" fill="none"/>'+
+   picture[setting.place]+'<ellipse cx="63" cy="156" rx="36" ry="8" fill="#273847" opacity=".21"/>'+people+'</svg></div>';
+ }
+ outfits.nur=['#8d799d','#b88768','#686677'];
+ outfits['student-two']=['#ae8a72','#cda178','#3e3a48'];
+ root.CM_VISUAL={scene,person,residentScene};
 })(typeof window!=='undefined'?window:globalThis);

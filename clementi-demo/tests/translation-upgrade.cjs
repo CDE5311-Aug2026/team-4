@@ -17,6 +17,7 @@ for(const c of D.cards){
  for(const key of ['title','desc','effects'])en(c[key],`Card ${c.id}/${key}`,c[key+'En']);
  en(c.source.title,`Card ${c.id}/sourceTitle`);en(c.source.text,`Card ${c.id}/sourceText`);
  const translated=I.card(c);assert.equal(translated.id,c.id);assert.equal(translated.type,c.type);assert.equal(translated.actionOption,c.actionOption);
+ if(c.previewOnly){const blocked=E.available(E.create(),c.id);assert(!blocked.ok);en(blocked.message,`Card ${c.id}/preview error`,blocked.messageEn);continue;}
  const s=c.actionOption?exerciseIssue(c.issueKinds[0]):E.create();s.budget=140;s.staffTotal=100;s.hold=-10000;s.danger=-10000;
  if(c.requiresCompleted)s.flags.completed[c.requiresCompleted]=true;
  if(c.id==='nrp')s.vote={support:80,approved:true,active:false};
@@ -48,6 +49,7 @@ const errorSamples=[
  '这一轮意见征集已经完成，请尝试另一种安排。','这个安排暂不可用。',
  '暂时没有需要这项行动的情境。先观察社区或查看来信。','花园已有工程或设施，不能再承诺保留原状。',
  '请把设施放在描边范围内，并使用四分之一圈的朝向。','需要先完成居民角，再用现有空间安排相聚。',
+ '走廊与坡道需要顺着现有通路放置。','这张工程牌仅供案例预览。','这张牌在当前社区案例不可用。','这项工程需要顺着现有入口或通路放置。',
  '居民投票达到 80%，可以启动邻里更新。','投票支持率 70%。尚未达到 75%。','投票支持率 80%。已达到推进门槛。',
  '正在安排「有盖走廊」 · 点击地图上的合适位置','持续占用 2 人','社区三目标：住得下80，处得来76，住得舒服73','打开来自陈玉英的信','剩余 23 / 55 秒'
 ];

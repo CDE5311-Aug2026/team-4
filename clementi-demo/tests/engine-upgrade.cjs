@@ -4,9 +4,9 @@ const dist=path.join(__dirname,'..','dist'),context={};context.window=context;co
 for(const file of ['data.js','engine.js'])vm.runInContext(fs.readFileSync(path.join(dist,file),'utf8'),context,{filename:file});
 const E=context.CM_ENGINE,D=context.CM_DATA;
 function issue(kind){const s=E.create();s.issues.forEach(i=>i.status='resolved');s.queue=[{at:0,kind}];s.flags['seen_'+kind]=false;E.tick(s,1);assert(s.issues.find(i=>i.id===kind&&i.status==='open'));return s;}
-assert.equal(D.cards.filter(c=>!c.actionOption).length,11);assert(D.cards.filter(c=>c.actionOption).length>=19);assert(D.cards.find(c=>c.id==='action-corner'));
+assert.equal(D.cards.filter(c=>!c.actionOption&&c.category!=='town').length,11);assert(D.cards.filter(c=>c.actionOption).length>=19);assert(D.cards.find(c=>c.id==='action-corner'));
 assert(D.cards.every(c=>Array.isArray(c.goals)&&c.effectChanges&&Array.isArray(c.land)));
-assert.equal(D.plots.length,11);assert.equal(D.plots[5].id,'locked');
+assert(D.plots.length>=14);assert.equal(D.plots[5].id,'locked');
 for(const id of ['cover','corner','aac','ramp'])assert(D.cards.find(c=>c.id===id).land.length>=2);
 assert(D.plots.every(p=>p.scenePosition.length===2&&p.sceneSize.length===2));
 
@@ -63,12 +63,54 @@ let presented;context.HDBScene={ready:true,sync(state,options){presented={state,
 context.CM_APP={getSelection(){return 'cover';}};
 vm.runInContext(fs.readFileSync(path.join(dist,'scene-adapter.js'),'utf8'),context,{filename:'scene-adapter.js'});
 s=E.create();context.CM_SCENE.sync(s,{issues:[{id:'route',channel:'world'},{id:'housing',channel:'mail'}],placement:{x:.2,z:0,rotation:0}});
-assert.equal(presented.state.plots.length,11);assert.equal(context.CM_SCENE.plotIds[6],'route-west');assert.equal(presented.options.issues.length,1);assert.equal(presented.options.issues[0].id,'route');assert.equal(presented.options.placement.x,.2);
+assert.equal(presented.state.plots.length,D.plots.length);assert.equal(context.CM_SCENE.plotIds[6],'route-west');assert.equal(presented.options.issues.length,1);assert.equal(presented.options.issues[0].id,'route');assert.equal(presented.options.placement.x,.2);
 assert.equal(presented.state.issues,s.issues);
 console.log('PASS scene adapter includes all sites and excludes private mail from map bubbles');
 
-// Preserve the established gameplay regressions, updating only the old fixed
-// catalogue-count assertion to distinguish normal cards from new action cards.
-const prior=fs.readFileSync(path.join(__dirname,'engine-check.cjs'),'utf8').replace('assert.equal(D.cards.length, 11);','assert.equal(D.cards.filter(c => !c.actionOption).length, 11);');
-new Function('require','__dirname','console',prior)(require,__dirname,console);
+const activeTown=E.catalogFor().filter(c=>c.category==='town');
+assert.equal(activeTown.length,3);assert(activeTown.every(c=>!c.previewOnly));
+for(const caseId of ['punggol','geylang']){
+ const previews=E.catalogFor(caseId);
+ assert(previews.length>=3);assert(previews.every(c=>c.previewOnly&&c.caseIds.includes(caseId)));
+ for(const c of previews)assert.equal(E.play(E.create(),c.id).ok,false);
+ const future=E.create();future.caseId=caseId;assert.equal(E.available(future,'cover','route').ok,false);
+}
+const projectSites={'hawker-expand':'hawker-annex','mall-entry':'mall-forecourt','mrt-connection':'mrt-link'};
+assert.equal(new Set(activeTown.map(c=>c.duration)).size,3,'Each town project has distinct construction time');
+for(const c of activeTown){
+ const site=projectSites[c.id],projectState=E.create();
+ projectState.queue=[];projectState.issues.forEach(i=>i.status='resolved');
+ assert.deepEqual(Array.from(E.eligiblePlots(projectState,c.id)),[site]);
+ assert.equal(E.play(projectState,c.id,'crossing').ok,false,'A town project cannot go on a road crossing');
+ assert.equal(E.play(projectState,c.id,'route').ok,false,'A town project cannot occupy an unrelated walkway');
+ const lowBudget=E.create();lowBudget.budget=c.budget-1;assert.equal(E.available(lowBudget,c.id,site).ok,false);
+ if(c.staff){const noStaff=E.create();noStaff.staffUsed=noStaff.staffTotal;assert.equal(E.available(noStaff,c.id,site).ok,false);}
+ const limit=E.placementLimits(site);assert(limit);assert.equal(E.play(projectState,c.id,site,{x:limit.x+.1,z:0,rotation:0}).ok,false);
+ assert.equal(E.play(projectState,c.id,site,{x:0,z:0,rotation:Math.PI/2}).ok,false);
+ const balance=projectState.budget;
+ assert(E.play(projectState,c.id,site).ok);assert.equal(projectState.budget,balance-c.budget);assert.equal(projectState.staffUsed,c.staff);
+ const project=projectState.projects[0],start=projectState.events.at(-1);
+ assert.equal(start.type,'start');assert.equal(start.projectId,project.id);assert.equal(start.plotId,site);assert.equal(start.changes.budget,-c.budget);
+ assert.equal(E.play(projectState,c.id,site).ok,false);assert.deepEqual(Array.from(E.eligiblePlots(projectState,c.id)),[]);
+ E.tick(projectState,c.duration-1);assert.equal(projectState.plots[site].status,'building');
+ E.tick(projectState,1);assert.equal(projectState.plots[site].status,'complete');assert.equal(projectState.staffUsed,c.staff);
+ const completed=projectState.events.at(-1);
+ assert.equal(completed.type,'complete');assert.equal(completed.projectId,project.id);assert.equal(completed.plotId,site);assert.equal(completed.cardId,c.id);
+ for(const [key,value]of Object.entries(c.effectChanges))assert.equal(Object.hasOwn(projectState.groups,key)?completed.changes.groups[key]:completed.changes[key],value);
+ assert.equal(E.play(projectState,c.id,site).ok,false);
+}
+console.log('PASS town projects use case-specific cards, named sites, finite costs, distinct durations and tracked completion effects');
+
+const previousSave=E.create();assert(E.play(previousSave,'ramp','crossing').ok);
+previousSave.schema=2;delete previousSave.caseId;delete previousSave.plots['hawker-annex'];
+previousSave.projects[0].placement.rotation=Math.PI;previousSave.plots.crossing.placement.rotation=Math.PI;
+previousSave.history.push({time:0,text:'长者等待接驳改善。'});
+const savedBudget=previousSave.budget,savedRemaining=previousSave.projects[0].remaining;
+E.migrate(previousSave);assert.equal(previousSave.caseId,'clementi');assert(previousSave.plots['hawker-annex']);
+assert.equal(previousSave.budget,savedBudget);assert.equal(previousSave.projects[0].remaining,savedRemaining);
+assert.equal(previousSave.projects[0].placement.rotation,0);assert.equal(previousSave.plots.crossing.placement.rotation,0);
+assert.equal(previousSave.history.at(-1).text,'老年人等待接驳改善。');
+console.log('PASS previous saves retain their project progress and adopt the revised site orientation and wording');
+
+require('./engine-check.cjs');
 console.log('All upgraded engine checks passed.');

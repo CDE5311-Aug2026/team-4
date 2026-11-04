@@ -91,3 +91,40 @@
 @media(max-width:800px){.flow-research-layout{grid-template-columns:1fr}.flow-details-title p{font-size:13px}.flow-case-emblem{font-size:48px;padding-right:3px}.flow-section-heading p{font-size:12px!important}.flow-persona-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.flow-persona-pick{display:block;padding:8px;min-height:106px}.flow-persona-thumbnail{width:39px;height:39px;margin-bottom:5px}.flow-persona-pick strong{font-size:12px}.flow-persona-pick small{font-size:10px}.flow-persona-detail{margin-top:12px}.flow-age-bar{grid-template-columns:95px minmax(25px,1fr) 46px 63px}.flow-age-bar>small{display:block}.flow-entry-bottom{flex-direction:column;align-items:stretch;gap:13px}.flow-entry-bottom>p{max-width:none}.flow-entry-bottom .flow-actions{justify-content:stretch}.flow-entry-bottom .flow-button{flex:1}}
 @media(max-width:520px){#entry-flow .improved-details{margin-top:20px}.flow-detail-tabs{gap:5px;margin-top:18px}.flow-detail-tab{font-size:12px;padding:8px 6px;gap:5px;min-height:46px}.flow-detail-tab>span{font-size:17px}.flow-details-title{gap:10px}.flow-details-title h1{font-size:30px!important}.flow-details-title p{font-size:12px;line-height:1.9}.flow-case-emblem{font-size:43px}.flow-research-panel,.flow-demographics,.flow-neighbourhood-people{padding:13px}.flow-persona-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.flow-persona-pick{display:flex;min-height:64px;padding:7px;gap:8px}.flow-persona-thumbnail{width:36px;height:40px;flex-basis:36px;margin:0}.flow-persona-pick strong{font-size:12px}.flow-persona-pick small{font-size:10px}.flow-persona-detail{padding:12px}.flow-persona-art{width:63px;height:72px;flex-basis:63px}.flow-persona-heading h3{font-size:17px}.flow-age-bar{grid-template-columns:83px minmax(20px,1fr) 43px;gap:6px}.flow-age-bar>small{display:none}.flow-age-bar{font-size:11px}.flow-amenity-pin{width:31px;height:31px;font-size:18px}.flow-history-description{min-height:0}.flow-demographic-foot{align-items:flex-start}.flow-demographic-foot>span{max-width:67%}.flow-history-description p,.flow-hotspot-description p{font-size:12px}.flow-hotspot-description{min-height:0}.flow-entry-bottom .flow-button{font-size:12px!important;min-width:0}.flow-challenge-options{gap:6px}.flow-challenge{font-size:12px}.flow-challenge-question{font-size:13px!important}}
 @media(prefers-reduced-motion:reduce){.flow-picture-walker{animation:none}}
+
+.flow-reality-layout{grid-template-columns:minmax(0,1.2fr) minmax(0,.85fr)}
+.flow-detail-tab.fiction-tab{margin-left:13px;border-style:dashed}
+.flow-detail-tab.fiction-tab.selected{border-style:solid}
+.flow-fact-picture{margin:0 0 16px}
+.flow-fact-picture figcaption{margin-top:6px;font-size:12px;color:#b8c6d6;line-height:1.55}
+.flow-fact-copy h3{margin:0 0 6px;font-size:17px;font-weight:600;color:#f3d7a7;line-height:1.5}
+.flow-fact-copy p{font-size:14px;color:#dbe3ea;line-height:1.9}
+.flow-fact-copy p+p{margin-top:10px!important}
+.flow-fact-sources{display:flex;flex-wrap:wrap;column-gap:13px;row-gap:5px;margin-top:13px}
+.flow-fact-sources a{font-size:12px;color:#e1c58f;line-height:1.55;overflow-wrap:anywhere;margin:0}
+.flow-challenge-detail{padding:12px 0 0;border-top:1px solid #c5b28255}
+#entry-flow .flow-population-total{margin:3px 0 14px;color:#cbd9e0;font-size:13px}
+.flow-population-total strong{font:24px/1.5 Georgia,"SimSun",serif;color:#f2d6a1;margin-right:5px}
+#entry-flow .flow-age-summary{font-size:12px;line-height:1.65;color:#ccd8df;min-height:38px;margin-top:11px}
+#entry-flow .flow-character-notice{font-size:13px;color:#d6c6a8;margin-bottom:12px}
+.flow-reality-people .flow-persona-grid{grid-template-columns:repeat(auto-fit,minmax(175px,1fr))}
+.flow-reality-people .flow-persona-detail{max-width:720px}
+.flow-entry-bottom .flow-actions{margin-left:auto}
+.flow-legacy-profile{display:grid;gap:15px;margin:22px 0}
+.flow-case-facts{font-size:14px;color:#dbe3ea;margin:8px 0 0;padding-left:20px}
+.flow-concept-section{padding:16px;border:1px solid #c6b48255;border-radius:8px;background:#233349}
+.flow-concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:10px}
+.flow-concept-card{border:1px solid #c6b48266;border-radius:6px;background:#293c50;padding:12px 14px}
+.flow-concept-card small{font-size:11px;color:#e3c490}
+.flow-concept-card h3{font-size:16px;color:#f3d9a9;margin:4px 0}
+.flow-concept-card p{font-size:13px;color:#d1dbe2;line-height:1.7}
+@media(max-width:800px){
+  .flow-reality-layout{grid-template-columns:1fr}
+  .flow-detail-tab.fiction-tab{margin-left:0}
+  .flow-entry-bottom .flow-actions{margin-left:0}
+}
+@media(max-width:520px){
+  .flow-detail-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow-reality-people .flow-persona-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow-fact-copy p{font-size:13px}
+}

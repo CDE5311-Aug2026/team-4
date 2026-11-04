@@ -16,13 +16,18 @@ class Element {
     this.tagName = tag; this.style = {}; this.dataset = {}; this.attributes = {};
     this.children = []; this.listeners = {}; this.clientWidth = 1440; this.clientHeight = 900;
     this.hidden = false; this.textContent = '';
+    const classes = new Set();
+    this.classList = { toggle(name, enabled) { if (enabled) classes.add(name); else classes.delete(name); }, contains: name => classes.has(name) };
   }
   append(...nodes) { nodes.forEach(node => { node.parentNode = this; this.children.push(node); }); }
   prepend(node) { node.parentNode = this; this.children.unshift(node); }
   remove() { if (this.parentNode) this.parentNode.children = this.parentNode.children.filter(node => node !== this); }
   addEventListener(type, callback) { (this.listeners[type] ||= []).push(callback); }
   setAttribute(name, value) { this.attributes[name] = String(value); }
+  getAttribute(name) { return this.attributes[name] ?? null; }
+  removeAttribute(name) { delete this.attributes[name]; }
   setPointerCapture() {}
+  focus() {}
   getBoundingClientRect() { return { left: 0, top: 0, width: this.clientWidth, height: this.clientHeight }; }
   getContext() { return { createLinearGradient: () => ({ addColorStop() {} }), fillRect() {} }; }
 }
@@ -91,13 +96,13 @@ assert.equal(invalidSiteLabel.node.style.display,'none','incompatible candidate 
 assert.equal(validSiteLabel.anchor.visible,true,'applicable garden label remains visible');
 assert.equal(validSiteLabel.node.style.display,'block');
 assert.equal(validSiteLabel.node.style.pointerEvents,'auto','valid candidate stays clickable');
-validSiteLabel.node.listeners.click[0]({preventDefault(){},stopPropagation(){}});assert.deepEqual(calls.pop(),['plot','garden']);
+validSiteLabel.content.listeners.click[0]({preventDefault(){},stopPropagation(){}});assert.deepEqual(calls.pop(),['plot','garden']);
 context.CM_SCENE.sync(model,{selectingCard:null,selectedPlot:null,showLand:true,paused:true,simTime:0});scene.animate(1200);
 assert.equal(invalidSiteLabel.anchor.visible,true,'explicit land display restores other spaces');
 context.CM_SCENE.sync(model,{selectingCard:null,selectedPlot:null,showLand:false,paused:true,simTime:0});scene.animate(1300);
 assert.equal(invalidSiteLabel.anchor.visible,false,'normal hidden land view removes candidate labels');
 
-assert.equal(context.CM_DATA.plots.length,11);
+assert.equal(context.CM_DATA.plots.length,14);
 for(const actor of scene.actors.filter(a=>a.id!=='lin-child')){assert(actor.node.userData.face,'principal actor has face');assert(actor.node.userData.profile,'principal actor has distinguishing profile');}
 for(const key of ['a','b','c','d','e','f','g','h']){const building=scene.projectNodes.get('building:'+key),windows=building.children.filter(n=>n.isMesh&&n.geometry.parameters.height> .8&&n.geometry.parameters.height<1.4);assert(windows.some(n=>n.geometry.parameters.depth<.1&&n.position.z>0),'front windows '+key);assert(windows.some(n=>n.geometry.parameters.depth<.1&&n.position.z<0),'rear windows '+key);assert(windows.some(n=>n.geometry.parameters.width<.1&&n.position.x>0),'right-side windows '+key);assert(windows.some(n=>n.geometry.parameters.width<.1&&n.position.x<0),'left-side windows '+key);}
 let worstGap=Infinity;for(let tick=0;tick<=2400;tick++){scene.updateTraffic(tick*.25);const diag=context.HDBScene.diagnostics();worstGap=Math.min(worstGap,diag.vehicleMinDistance);assert.equal(diag.vehicleOverlaps,0,'vehicle overlap at '+tick*.25);}
@@ -113,4 +118,4 @@ model.flags.noiseResolved=true;context.CM_SCENE.sync(model,{paused:false,simTime
 const socialBefore=scene.socialActors[0].node.userData.limbs.arms[0].rotation.x;context.CM_SCENE.sync(model,{paused:false,simTime:19});scene.animate(7000);assert.notEqual(scene.socialActors[0].node.userData.limbs.arms[0].rotation.x,socialBefore,'social gathering really animates');
 assert(context.HDBScene.cue({type:'start',cardId:'aac',plotId:'room-b'}));assert(context.HDBScene.diagnostics().cueEffects>0);
 const modelPlot=context.__CM_SCENE_TEST.projectNodes.get('plot:room-b');assert(modelPlot,'added sites have camera anchors');
-console.log('PASS upgraded scene: 11 natural sites, eight detailed personas, four-sided buildings, 600s SAT collision audit + large time jumps, preview, worker and social motion, pause and cues. Min vehicle centre gap '+worstGap);
+console.log('PASS upgraded scene: 14 natural sites, eight detailed personas, four-sided buildings, 600s SAT collision audit + large time jumps, preview, worker and social motion, pause and cues. Min vehicle centre gap '+worstGap);

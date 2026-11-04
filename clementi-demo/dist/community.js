@@ -17,13 +17,48 @@
     csv:'respopagesex2026.csv',generated:'2026-09-25',
     definition:pair('新加坡公民及永久居民；不含非永久居民的外籍人口。','Singapore citizens and permanent residents; excludes foreigners who are not permanent residents.'),
     method:pair('汇总金文泰规划区9个互斥分区、男女性别及单岁年龄。原表每个单元格取整至10人，人数与比例均为按这些单元格计算的概数。','Summed across 9 mutually exclusive subzones, both sexes and single years of age. Source cells are rounded to the nearest 10; counts and percentages here are approximate aggregates.'),
-    scope:pair('这张图描述整个规划区，不是游戏里的八户居民或示意街区。','This chart describes the whole planning area, not the eight fictional households or the illustrative game neighbourhood.')
+    scope:pair('统计范围为金文泰整个规划区，涵盖9个分区。','The figures cover all nine subzones in the Clementi Planning Area.')
   };
   // END OFFICIAL DEMOGRAPHICS
   const sources={
     geography:{title:pair('SingStat 地区人口资料','SingStat geographic population data'),url:demographics.sourceUrl},
     definition:{title:pair('人口统计口径','Population definitions'),url:'https://www.singstat.gov.sg/find-data/explore-data-themes/population/population-and-population-structure/our-data-explained'},
-    history:{title:pair('SG101 金文泰历史与社区设施','SG101 Clementi history and amenities'),url:'https://www.sg101.gov.sg/resources/archives/clementi/'}
+    history:{title:pair('SG101 · 金文泰历史与设施','SG101 · Clementi history and amenities'),url:'https://www.sg101.gov.sg/resources/archives/clementi/'},
+    national:{title:pair('SingStat · 全国居民人口年龄结构','SingStat · National resident age structure'),url:'https://www.singstat.gov.sg/find-data/explore-data-themes/population/population-and-population-structure/latest-news-data'},
+    housing:{title:pair('SingStat · 住宅类型数据','SingStat · Type of dwelling data'),url:'https://www.singstat.gov.sg/files/c6755f50-4bfb-4bfa-b7d3-00259b9509ed.zip'},
+    market:{title:pair('NEA · 巴刹与熟食中心名录','NEA · Markets and hawker centres'),url:'https://www.nea.gov.sg/docs/default-source/hawker-centres-documents/list-of-hcs_19-jun-2024.pdf'},
+    clinic:{title:pair('NUP · 金文泰综合诊疗所','NUP · Clementi Polyclinic'),url:'https://www.nup.com.sg/our-clinics/our-clinics-cle'},
+    park:{title:pair('NParks · 金文泰树林公园','NParks · Clementi Woods Park'),url:'https://www.nparks.gov.sg/visit/parks/park-detail/clementi-woods-park/'},
+    upgrading:{title:pair('HDB · 适老设施提升计划，2026年4月','HDB · Silver Upgrading Programme, April 2026'),url:'https://www.hdb.gov.sg/hdb-pulse/news/2026/close-to-29000-hdb-households-to-benefit-from-upgrading-projects-to-enhance-their-neighbourhoods'},
+    rail:{title:pair('LTA · 跨岛线二期施工公告','LTA · Cross Island Line Phase 2 construction'),url:'https://www.lta.gov.sg/content/ltagov/en/newsroom/2025/7/news-releases/construction_begins_on_crl2.html'},
+    peaks:{title:pair('MND · 多层停车场改作其他用途的国会答复','MND · Parliamentary reply on repurposing car parks'),url:'https://www.mnd.gov.sg/newsroom/parliament-matters/q-as/view/oral-answer-by-ministry-of-national-development-on-repurposing-multi-storey-car-parks-mscps-for-alternative-uses'}
+  };
+  const nationalAge={total:4231500,aged65Plus:825300};
+  const housing={total:104820,hdb:70080,hdb3Room:23310,hdb4Room:28560};
+  const nationalOlderShare=(100*nationalAge.aged65Plus/nationalAge.total).toFixed(1);
+  const localOlderShare=demographics.ageGroups.find(group=>group.id==='65+').percent.toFixed(1);
+  const housingShare=(100*housing.hdb/housing.total).toFixed(1);
+  const profile={
+    summary:pair('金文泰位于新加坡西南部。镇中心以组屋、巴刹熟食中心、医疗服务、地铁和巴士为居民提供日常所需。','Clementi is in south-western Singapore. Its town centre brings together public housing, a market and food centre, healthcare, MRT and bus services.'),
+    nationalAge,
+    housing,
+    history:[
+      {year:'1975–1979',title:pair('从甘榜与农地到组屋新镇','From kampongs and farms to a public housing town'),body:pair('金文泰一带过去有沼泽、甘榜和农地。建屋发展局主要在1975至1979年间发展这里，把住房与日常设施一起规划。金文泰是建屋局发展的第八个新镇。','Parts of Clementi were once swamp, kampongs and farmland. HDB developed its eighth new town mainly between 1975 and 1979, planning housing alongside everyday amenities.'),sources:['history']},
+      {year:'2011',title:pair('住房、商业与交通连接起来','Housing, shops and transport connect'),body:pair('金文泰购物中心启用。建屋局在同一个综合项目中安排公共住房、商业设施与巴士转换站，镇中心的购物与换乘因此集中在一起。','Clementi Mall opened as part of an HDB development that brought public housing, shops and a bus interchange together in the town centre.'),sources:['history']},
+      {year:'2022',title:pair('Clementi Peaks 组屋项目竣工','Clementi Peaks is completed'),body:pair('Clementi Peaks 于2022年7月竣工。自1970年代新镇开发以来，金文泰已有数代组屋项目。','Clementi Peaks was completed in July 2022, adding a newer HDB development to a town whose public housing history dates to the 1970s.'),sources:['peaks']}
+    ],
+    conditions:{
+      homes:{icon:'⌂',name:pair('住房','Housing'),body:pair(`按2026年6月住宅类型统计，约${housingShare}%的金文泰规划区居民住在组屋。约23,310人住三房式，约28,560人住四房式。各项人数按已取整的分区数据汇总。`,`In June 2026, about ${housingShare}% of Clementi Planning Area residents lived in HDB flats. Roughly 23,310 lived in 3-room flats and 28,560 in 4-room flats. These are sums of rounded subzone data.`),sources:['housing'],left:19,top:36},
+      food:{icon:'☕',name:pair('巴刹与熟食','Markets and hawker food'),body:pair('金文泰3道第448座有镇中心的巴刹与熟食中心。金文泰2道第353座、金文泰西2街第726座也列在国家环境局的巴刹与熟食中心名录中。','Block 448 Clementi Avenue 3 houses the town centre’s market and food centre. NEA also lists centres at Block 353 Clementi Avenue 2 and Block 726 Clementi West Street 2.'),sources:['market','history'],left:55,top:68},
+      transport:{icon:'↔',name:pair('公共交通','Public transport'),body:pair('金文泰站（EW23）是东西线车站。镇中心的巴士转换站与购物中心和公共住房同属一项综合发展，居民可在镇中心换乘巴士与地铁。','Clementi MRT (EW23) is on the East–West Line. The town centre’s bus interchange shares a development with Clementi Mall and public housing, with both rail and buses available in the centre.'),sources:['clinic','history'],left:82,top:40},
+      clinic:{icon:'＋',name:pair('基层医疗','Primary care'),body:pair('金文泰综合诊疗所位于金文泰3道第451座二楼。该诊疗所提供基础医疗、牙科、药剂与部分康复服务，最近的地铁站是金文泰站。','Clementi Polyclinic is on level two of Block 451 Clementi Avenue 3. Services include primary medical care, dentistry, pharmacy and physiotherapy. Clementi is its nearest MRT station.'),sources:['clinic'],left:42,top:39},
+      space:{icon:'♧',name:pair('公共绿地','Public green space'),body:pair('金文泰树林公园位于西海岸路，邻近 West Coast Plaza。公园占地12公顷，有林荫休憩区和露天剧场，NParks 标示公园可供轮椅使用。','Clementi Woods Park covers 12 hectares along West Coast Road beside West Coast Plaza. It has wooded seating areas and an amphitheatre. NParks lists it as wheelchair accessible.'),sources:['park'],left:93,top:72}
+    },
+    challenges:[
+      {icon:'⌁',title:pair('老住区的适老更新','Making established estates easier to use as residents age'),body:pair(`2026年6月，金文泰规划区65岁及以上居民约占${localOlderShare}%，同期全国居民约占${nationalOlderShare}%。在已有住区增设适老设施，需要结合老年人日常使用的通路与公共空间。`,`In June 2026, residents aged 65 and over made up about ${localOlderShare}% of the Clementi Planning Area, compared with about ${nationalOlderShare}% nationally. Upgrading an established estate calls for improvements along the routes and in the shared spaces that older residents use.`),response:pair('建屋局在2026年4月表示，适老设施提升计划（SUP）未来会扩展到金文泰等新镇。具体住区、工程内容与实施时间待建屋局公布。','In April 2026, HDB named Clementi as one of the towns it plans to add to the Silver Upgrading Programme. HDB will announce the specific precincts, works and timelines when ready.'),sources:['geography','national','upgrading']},
+      {icon:'↔',title:pair('跨岛线施工期间的日常通勤','Keeping trains running during Cross Island Line works'),body:pair('陆路交通管理局于2025年7月公布跨岛线二期土建工程开工。未来的金文泰跨岛线车站将接驳东西线。二期以2032年完工为目标。','LTA announced the start of Cross Island Line Phase 2 civil works in July 2025. The future Clementi station will connect the Cross Island Line with the East–West Line. Phase 2 is targeted for completion by 2032.'),response:pair('连接新旧车站涉及现有东西线车站的改建。陆交局将分阶段施工并监测影响，以尽量减少对既有列车服务的干扰。','The transfer requires alterations to the existing East–West Line station. LTA plans to phase and monitor the work to minimise disruption to existing train services.'),sources:['rail']},
+      {icon:'♧',title:pair('为社区用途腾出空间','Finding space for community uses'),body:pair('在已建成的住区，把多层停车场的一部分改作社区空间，要兼顾长期停车需求、消防疏散、楼面承重和对邻居的影响。','In an established estate, converting part of a multi-storey car park to community use involves future parking demand, fire egress, structural loading and effects on neighbours.'),response:pair('国家发展部在2026年4月的国会答复中以 Clementi Peaks 为例，指出当时停车需求还未稳定，评估将车位改作其他用途仍为时过早。','In an April 2026 parliamentary reply, MND cited Clementi Peaks. It said parking demand had yet to settle and that it was too early to consider converting its parking spaces.'),sources:['peaks']}
+    ]
   };
   const personas={
     chen:{id:'chen',age:78,ageBand:'65+',name:pair('陈玉英','Mdm Chen Yuying'),gender:pair('女','Woman'),role:pair('退休居民','Retired resident'),home:pair('旧组屋 A · 三房式','Older Block A · 3-room flat'),tenure:pair('居住四十多年','Over forty years here'),family:pair('独居；与女儿保持联系','Lives alone; stays in touch with her daughter'),routine:pair('习惯清晨到食阁见熟人，熟悉楼里的邻居。','Usually meets familiar faces at the hawker centre in the morning and knows her neighbours.'),evidence:pair('对应65岁以上居民的年龄层；独居、78岁、家庭关系和日常习惯为虚构设定，并非对真实住户的调查。','Connects to the 65+ age group. Living alone, age 78, family links and daily routines are fictional, not findings about a real resident.')},
@@ -35,6 +70,6 @@
     zhang:{id:'zhang',age:71,ageBand:'65+',name:pair('张叔','Uncle Zhang'),gender:pair('男','Man'),role:pair('退休居民、居委会志愿者','Retired resident and RC volunteer'),home:pair('旧组屋 B · 居民联络点','Older Block B · resident contact point'),tenure:pair('认识许多老住户','Knows many long-term residents'),family:pair('邻里联系是退休生活的一部分','Neighbourhood connections are part of retirement'),routine:pair('探望熟人、传递消息，常在底层停下来聊天。','Visits familiar faces, passes on messages and stops for chats downstairs.'),evidence:pair('对应65岁以上年龄层；志愿工作、71岁和人际关系为虚构，不代表同龄居民都如此。','Connects to the 65+ age group. Volunteering, age 71 and relationships are fictional and do not describe everyone in this group.')},
     ali:{id:'ali',age:29,ageBand:'25-44',name:pair('阿丽','Ali'),gender:pair('女','Woman'),role:pair('轮班护士、租户','Shift-working nurse and tenant'),home:pair('旧组屋 A · 小户型','Older Block A · small flat'),tenure:pair('近年搬来','Moved here in recent years'),family:pair('独立生活，作息随排班变化','Lives independently; her schedule follows her shifts'),routine:pair('在诊所或交通方向与家之间来回，休息时间不固定。','Travels between home and the clinic or transport connection, with changing rest times.'),evidence:pair('对应25–44岁年龄层；29岁、职业和租住经历为虚构，不能由年龄统计推得。','Connects to the 25–44 age group. Age 29, occupation and tenancy are fictional and cannot be inferred from age statistics.')}
   };
-  root.CM_COMMUNITY={demographics,personas,sources,
+  root.CM_COMMUNITY={demographics,profile,personas,sources,
     disclaimer:pair('八户角色是带有研究背景的虚构人物，不对应真实住户，也不是人口比例抽样。','The eight households are fictional characters informed by context, not real residents or a proportional population sample.')};
 })(typeof window!=='undefined'?window:globalThis);

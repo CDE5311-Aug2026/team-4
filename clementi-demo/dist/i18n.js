@@ -23,12 +23,12 @@
 林家|||The Lin family
 林志豪一家|||The Lin family
 德薇|||Devi
-长期居住的长者|||Long-term older residents
+长期居住的老年人|||Long-term older residents
 需要换房的屋主|||Owners looking to move
 年轻家庭|||Young families
 照护家庭|||Caregiving households
 租户|||Tenants
-独居长者|||Older resident living alone
+独居老年人|||Older resident living alone
 想换小屋的长期屋主|||Long-term owners looking to downsize
 有两个孩子的年轻家庭|||Young family with two children
 与长辈同住的照护家庭|||Family caring for an older relative
@@ -64,11 +64,11 @@
 保留生活空间，也希望能够与邻居说得上话。|||They want room for their own lives and a chance to get to know their neighbours.
 与楼下陈玉英有噪音摩擦。|||Noise has caused friction with Mdm Chen downstairs.
 可以通过食阁活动认识黄美兰和老邻居。|||Hawker-centre gatherings could introduce them to Huang Meilan and long-term neighbours.
-在这里做了三十多年。她的摊位也是长者每天碰面的地方，最近开始考虑什么时候退休。|||She has run her stall here for over thirty years. It is also a daily meeting place for older residents. Lately, she has been thinking about retirement.
+在这里做了三十多年。她的摊位也是老年人每天碰面的地方，最近开始考虑什么时候退休。|||She has run her stall here for over thirty years. It is also a daily meeting place for older residents. Lately, she has been thinking about retirement.
 让熟客仍有相聚的地方，也给自己安排喘息的时间。|||She wants regular customers to keep their meeting place, while making time for herself to rest.
 每天见到陈玉英，很容易察觉她是否缺席。|||She sees Mdm Chen every day and quickly notices when she is absent.
 认识德薇的母亲。|||She knows Devi's mother.
-愿意帮忙介绍学生与长者认识。|||She is willing to introduce the students and older neighbours to one another.
+愿意帮忙介绍学生与老年人认识。|||She is willing to introduce the students and older neighbours to one another.
 退休后参与居委会，认识许多老住户。热心串门，也会把听到的说法带给别人。|||He joined the Residents' Committee after retiring and knows many long-term residents. He enjoys visiting neighbours and passing along what he hears.
 让居民知道决定怎样做出，并能表达意见。|||He wants residents to understand how decisions are made and have a chance to speak.
 探望陈玉英。|||He visits Mdm Chen.
@@ -113,14 +113,14 @@ EIP 个案申诉支持|||EIP case support
 让不同作息、不同居住年限的邻居坐下来认识彼此；人手仅在筹备期间占用。|||Bring neighbours with different routines and lengths of residence together. Staffing is needed only while preparing the gathering.
 通过独立居民投票后，推进公共区域的整片更新。支持率必须达到 75%。|||Renew shared areas after a separate residents' vote. Support must reach 75% before work can proceed.
 协助拉赫曼夫妇整理资料、请求个案审理；消耗 8 点居民信任，不能保证豁免或成交。|||Help Rahman and Noor prepare documents and request an individual review. Uses 8 resident-trust points; no exemption or sale is guaranteed.
-住得舒服 +12；长者状态 +14。路线变直、雨天恢复外出。|||Liveability +12; older residents +14. A more direct route restores wet-weather outings.
-住得舒服 +9；长者 +8，照护家庭 +4。|||Liveability +9; older residents +8; caregiving households +4.
-住得舒服 +10；长者 +12，照护家庭 +8。不会解决淋雨路线。|||Liveability +10; older residents +12; caregiving households +8. This does not shelter the outdoor route.
+住得舒服 +12；老年人状态 +14。路线变直、雨天恢复外出。|||Liveability +12; older residents +14. A more direct route restores wet-weather outings.
+住得舒服 +9；老年人 +8，照护家庭 +4。|||Liveability +9; older residents +8; caregiving households +4.
+住得舒服 +10；老年人 +12，照护家庭 +8。不会解决淋雨路线。|||Liveability +10; older residents +12; caregiving households +8. This does not shelter the outdoor route.
 处得来 +12；租户 +10，年轻家庭 +5。持续占用人手 1。|||Community ties +12; tenants +10; young families +5. Ongoing staffing: 1.
-处得来 +10；长者 +10，照护家庭 +12。持续占用人手 2。|||Community ties +10; older residents +10; caregiving households +12. Ongoing staffing: 2.
-长者 +22，照护家庭 +24；处得来 +5；年轻家庭 -7、舒适 -3（原有花园减少）。持续人手 3。|||Older residents +22; caregiving households +24; community ties +5; young families -7; liveability -3 (less garden space). Ongoing staffing: 3.
+处得来 +10；老年人 +10，照护家庭 +12。持续占用人手 2。|||Community ties +10; older residents +10; caregiving households +12. Ongoing staffing: 2.
+老年人 +22，照护家庭 +24；处得来 +5；年轻家庭 -7、舒适 -3（原有花园减少）。持续人手 3。|||Older residents +22; caregiving households +24; community ties +5; young families -7; liveability -3 (less garden space). Ongoing staffing: 3.
 年轻家庭 +24；处得来 +5；住得舒服 +3。持续占用人手 2，花园面积减少。|||Young families +24; community ties +5; liveability +3. Ongoing staffing: 2; less garden space.
-长者 +9，照护家庭 +10；处得来 +5。持续占用人手 1，不替代专业日间照护。|||Older residents +9; caregiving households +10; community ties +5. Ongoing staffing: 1. This does not replace professional day care.
+老年人 +9，照护家庭 +10；处得来 +5。持续占用人手 1，不替代专业日间照护。|||Older residents +9; caregiving households +10; community ties +5. Ongoing staffing: 1. This does not replace professional day care.
 处得来 +8；租户 +8，年轻家庭 +5；信任 +5。完成后归还人手，可间隔 60 秒重办。|||Community ties +8; tenants +8; young families +5; trust +5. Staff return after the event. Repeat after a 60-second interval.
 住得舒服 +17，处得来 +7；各群体 +4。需 75% 投票支持，施工期间有噪音。|||Liveability +17; community ties +7; all groups +4. Requires 75% voting support. Construction causes noise.
 模拟受理后，换房屋主状态 +24。后续仍需解释程序；信任 -8。|||After the simulated case is accepted for review, owners looking to move +24. The process still needs explanation; trust -8.
@@ -129,7 +129,7 @@ HDB · 乐龄易（EASE）|||HDB · Enhancement for Active Seniors (EASE)
 CEA · EIP 与回购援助|||CEA · EIP and buyback assistance
 设计取舍 · 非特定政策复刻|||Design trade-off · not a reproduction of a specific policy
 NRP 可改善公共空间、有盖走廊及无障碍设施；须有至少 75% 合资格屋主支持。预算、工期与效果数值为试玩设定。|||NRP can improve shared spaces, sheltered linkways and accessibility. At least 75% of eligible flat owners must support it. Budget, construction time and effects are demo settings.
-EASE 改善住宅内及入口的长者安全与便利；不会替代屋外有盖路线。游戏中的经费与工期为试玩设定。|||EASE improves safety and mobility for seniors inside homes and at entrances. It does not replace sheltered outdoor routes. Funding and construction time here are demo settings.
+EASE 改善住宅内及入口的老年人安全与便利；不会替代屋外有盖路线。游戏中的经费与工期为试玩设定。|||EASE improves safety and mobility for older residents inside homes and at entrances. It does not replace sheltered outdoor routes. Funding and construction time here are demo settings.
 乐龄活动中心提供活动、友伴及信息转介。普通 AAC 并不等于日间照护中心；游戏中照护家庭受益指获得支持与转介。数值为试玩设定。|||Active Ageing Centres provide activities, befriending and information referrals. A standard AAC is not a day-care centre. Benefits to caregiving households here mean support and referrals. Values are demo settings.
 社区关怀公寓结合适老住房与服务。这里模拟在社区增加住房及服务选择，未复刻真实申请资格、费用或审批。用地、工期与数值为试玩设定。|||Community Care Apartments combine senior-friendly housing with services. This demo explores added housing and support choices, without reproducing real eligibility, fees or approvals. Sites, construction time and values are demo settings.
 EIP 旨在促进族群融合；面临困难的屋主可寻求援助，HDB 按个案审理。游戏只模拟准备与受理申诉，不保证豁免或成交；楼栋状态、居民与数值均为虚构。|||EIP aims to support ethnic integration. Owners facing difficulties may seek assistance, assessed individually by HDB. The game simulates preparing and accepting a case for review; no exemption or sale is guaranteed. Block conditions, residents and values are fictional.
@@ -160,7 +160,7 @@ EIP 旨在促进族群融合；面临困难的屋主可寻求援助，HDB 按个
 延长出售安排给了夫妻更多时间，房子的去向却还没有确定。他们希望这次有具体跟进。|||An extension has given the couple more time, but their flat's future remains uncertain. This time, they want concrete follow-up.
 夫妻轮流请假照顾长辈。活动中心可以提供友伴与转介，但并不等于有人整天照护。需要在邻里支持、正式服务连接及住房选择之间安排。|||The couple take turns taking leave to care for an older relative. An activity centre can offer befriending and referrals, but not all-day care. Neighbourhood help, formal services and housing options each need consideration.
 街角花园是唯一较大的可用地块。林家希望增加托育与儿童空间，照护家庭希望获得社区关怀住房。无论哪边，原来的花园都会缩小；未被满足的一方仍需要其他办法。|||The corner garden is the only large available site. The Lin family want childcare and play space; caregiving households want housing with support. Either choice reduces the garden. The other need will still require another approach.
-花园地块已经安排了关怀住房。林家理解长者需要服务，但他们的日常托育压力仍然存在。能否先在现有空间内安排小规模支持？|||The garden site has been allocated to supported housing. The Lin family understand older residents' needs, but their childcare pressure remains. Could existing spaces provide some smaller-scale support?
+花园地块已经安排了关怀住房。林家理解老年人需要服务，但他们的日常托育压力仍然存在。能否先在现有空间内安排小规模支持？|||The garden site has been allocated to supported housing. The Lin family understand older residents' needs, but their childcare pressure remains. Could existing spaces provide some smaller-scale support?
 街角地块已用于儿童空间。德薇说，母亲也愿意留在原来的家，只是需要知道可以找谁帮忙。|||The corner site has become a children's space. Devi says her mother is also happy to stay in her existing home; she just needs to know where to find help.
 黄美兰还想继续见到熟客，也希望每周能多休息一天。她不想把继续经营变成对社区的责任。|||Huang Meilan wants to keep seeing her regulars, but would also like another day off each week. She does not want running the stall to become an obligation to the neighbourhood.
 旧公共区域需要更新。是否推进，必须由合资格屋主投票。支持率与居民对你的信任是两件事；75% 是本计划的推进门槛。|||The older shared areas need renewal. Eligible flat owners must vote on whether it proceeds. Support for the plan and trust in you are separate; this programme requires 75% support.
@@ -210,7 +210,7 @@ EIP 旨在促进族群融合；面临困难的屋主可寻求援助，HDB 按个
 居民信任 -8 · 35 秒模拟受理；不保证豁免或成交|||Resident trust -8 · 35-second simulated review intake; no exemption or sale guaranteed
 居民信任 -3；暂缓压力，90 秒后需要后续支持|||Resident trust -3; temporary relief, with follow-up needed after 90 seconds
 预算 8；先厘清可行的住房与援助选择|||Budget 8; clarify available housing and assistance options first
-处得来 +5；长者与租户各 +5|||Community ties +5; older residents and tenants +5 each
+处得来 +5；老年人与租户各 +5|||Community ties +5; older residents and tenants +5 each
 处得来 +3；租户 +3，不新增持续服务|||Community ties +3; tenants +3; no new ongoing service
 预算 8；处得来 +7，居民信任 +4|||Budget 8; community ties +7; resident trust +4
 居民信任 -3；处得来 +8|||Resident trust -3; community ties +8
@@ -228,7 +228,7 @@ EIP 旨在促进族群融合；面临困难的屋主可寻求援助，HDB 按个
 预算 9 · 持续人手 1|||Budget 9 · ongoing staff 1
 预算 34 · 持续人手 2|||Budget 34 · ongoing staff 2
 预算 12；照护家庭 +12，不新增日间照护设施|||Budget 12; caregiving households +12; no new day-care facility
-预算 10；长者 +5、处得来 +4，保留相聚时间|||Budget 10; older residents +5; community ties +4; preserve time to meet
+预算 10；老年人 +5、处得来 +4，保留相聚时间|||Budget 10; older residents +5; community ties +4; preserve time to meet
 居民角已建则直接安排；否则建设预算 18、人手 1|||Use an existing residents' corner; otherwise budget 18 and staff 1 to build one
 初始支持率 58%；不会把居民信任直接换算成选票|||Initial support 58%; resident trust is not directly converted into votes
 居民信任 +2；60 秒后重新提出请愿|||Resident trust +2; the petition returns after 60 seconds
@@ -384,7 +384,7 @@ EIP 旨在促进族群融合；面临困难的屋主可寻求援助，HDB 按个
  即可完成这一局。任一目标低于 ||| to complete this game. If any goal falls below 
  并持续 ||| for 
 ，本局会结束。没有固定的总倒计时。|||, this game ends. There is no fixed overall countdown.
-「住得下」由五类居民的状态计算：长期长者、换房屋主、年轻家庭、照护家庭和租户。稳定一类计 20 分。|||Room to stay is calculated from five groups: long-term older residents, owners looking to move, young families, caregiving households and tenants. Each stable group contributes 20 points.
+「住得下」由五类居民的状态计算：长期老年人、换房屋主、年轻家庭、照护家庭和租户。稳定一类计 20 分。|||Room to stay is calculated from five groups: long-term older residents, owners looking to move, young families, caregiving households and tenants. Each stable group contributes 20 points.
 居民信任是居民对管理者的态度；处得来是居民彼此之间的关系；NRP 支持率则针对具体更新方案，三者分开计算。|||Resident trust reflects attitudes towards the manager. Community ties describe relationships between residents. NRP support concerns a specific renewal proposal. All three are calculated separately.
 目标线、危险线和维持时长均为试玩设定。|||Target lines, danger lines and required durations are demo settings.
 三个目标|||Three goals
@@ -558,7 +558,7 @@ A栋|||Block A
 合租学生|||Student housemates
 学生|||Students
 合资格屋主|||Eligible flat owners
-长者|||Older residents
+老年人|||Older residents
 社区关怀公寓|||Community Care Apartments
 邻里更新|||Neighbourhood renewal
 照护住房 / 托育 · 用地择一|||Supported housing / childcare · choose one use
@@ -625,6 +625,8 @@ A栋|||Block A
 
 
 
+
+
   // BEGIN APPROVED UPGRADE TRANSLATIONS
   add(`
 约定作息并当面调解|||Agree quiet hours together
@@ -636,7 +638,7 @@ A栋|||Block A
 补上换房与援助咨询|||Follow up with housing advice
 预算 10；屋主 +16，明确后续选择|||Budget 10; owners +16, with a clearer next step.
 约好时间，建立互助联系|||Agree a time to help
-处得来 +5；长者与租户各 +5|||Community ties +5; older residents and tenants +5.
+处得来 +5；老年人与租户各 +5|||Community ties +5; older residents and tenants +5.
 保留随手帮忙的方式|||Keep help informal
 处得来 +3；租户 +3，不新增持续服务|||Community ties +3; tenants +3; no new ongoing service.
 公开解释个案审理原则|||Explain individual case review
@@ -652,9 +654,9 @@ A栋|||Block A
 安排专项照护服务咨询|||Arrange a care-service consultation
 预算 12；照护家庭 +12，不新增日间照护设施|||Budget 12; caregiving households +12; no new day-care facility.
 支持她调整营业与邻里安排|||Support a more restful stall routine
-预算 10；长者 +5、处得来 +4，保留相聚时间|||Budget 10; older residents +5; community ties +4.
+预算 10；老年人 +5、处得来 +4，保留相聚时间|||Budget 10; older residents +5; community ties +4.
 用现有居民角安排相聚|||Meet at the existing residents’ corner
-使用已建居民角，不再扣建设费或新增人手；长者 +4、处得来 +4|||Use the completed corner with no new construction cost or staff; older residents +4; community ties +4.
+使用已建居民角，不再扣建设费或新增人手；老年人 +4、处得来 +4|||Use the completed corner with no new construction cost or staff; older residents +4; community ties +4.
 发起公开投票与意见征集|||Open voting and feedback
 初始支持率 58%；不会把居民信任直接换算成选票|||Starts at 58% support; trust is not converted into votes.
 先做小范围更新，再征集意见|||Improve locally, then ask again
@@ -665,27 +667,59 @@ A栋|||Block A
 居民信任 -3；支持率 +10 个百分点，只进行一次|||Trust -3; voting support +10 percentage points, once.
 把反馈记下来，继续留意|||Record the feedback and keep watching
 居民信任 +3；这条路线的承诺已兑现|||Trust +3; the promise on this route has been kept.
+食阁扩建|||Hawker centre expansion
+利用现有食阁旁的预留空间增设有顶座席与等候区。|||Add sheltered seating and a waiting area beside the existing hawker centre.
+处得来 +9、住得舒服 +4、老年人 +5、居民信任 +3。持续占用人手 1。|||Community ties +9, liveability +4, older residents +5, resident trust +3. Uses one ongoing staff member.
+商场入口改造|||Shopping centre entrance upgrade
+在现有商场入口前场整理步行空间，设置清晰入口与休息处。|||Reorganise the existing shopping centre forecourt with a clear entrance and a place to rest.
+住得舒服 +8、年轻家庭 +5、照护家庭 +3、居民信任 +2。|||Liveability +8, young families +5, caregiving households +3, resident trust +2.
+地铁换乘接驳工程|||MRT interchange access works
+改善现有地铁站前场与换乘步道的连接，增加等候及导向设施。|||Improve the connection between the existing MRT forecourt and transfer path with waiting space and wayfinding.
+住得舒服 +13、老年人 +7、租户 +5、居民信任 +4。|||Liveability +13, older residents +7, tenants +5, resident trust +4.
+新建地铁与换乘枢纽|||New MRT and interchange hub
+案例概念牌，展示新站、换乘空间与步行网络如何一起布局。|||A case concept showing how a new station, interchange space and pedestrian routes could fit together.
+资源需求与效果在案例开放后确定。|||Costs and outcomes will be set when the case opens.
+新建综合商业中心|||New integrated shopping centre
+案例概念牌，展示商业、日常服务与公共通行空间如何组合。|||A case concept exploring how shops, daily services and public pedestrian space could be combined.
+新建社区食阁|||New neighbourhood hawker centre
+案例概念牌，探索为新社区增加日常餐饮与相聚空间。|||A case concept exploring a new place for everyday meals and social gatherings.
+市场街区整修|||Market precinct renewal
+案例概念牌，探索既有市场的摊位、步行空间与社区生活如何一起更新。|||A case concept exploring renewal of an existing market, pedestrian space and neighbourhood life.
+旧组屋出口路缘|||Older block curb approach
+在人行道内把组屋出口和斑马线起点接起来，坡道止于路缘。|||A ramp on the sidewalk connects the block approach to the edge of the crossing.
 A 栋门前步行段|||Block A approach
 连接旧组屋与食阁的另一段露天路；可沿既有步道加盖，让陈玉英接上熟悉的食阁路线。|||An alternative uncovered section between the older blocks and hawker centre. A shelter here connects Mdm Chen to her familiar route.
 陈玉英与旧组屋住户|||Mdm Chen and older-block residents
 食阁西侧接驳步道|||West hawker approach
-食阁西侧的绕行接驳段；沿现有路线加盖，同样改善长者前往食阁的连续通路。|||The western approach to the hawker centre. Sheltering this existing section also improves the continuous route for older neighbours.
-长者与食阁访客|||Older residents and hawker visitors
+食阁西侧的绕行接驳段；沿现有路线加盖，同样改善老年人前往食阁的连续通路。|||The western approach to the hawker centre. Sheltering this existing section also improves the continuous route for older neighbours.
+老年人与食阁访客|||Older residents and hawker visitors
 B 栋底层公共空间|||Block B void deck
 B 栋现有底层空间，可安排居民角；更接近拉赫曼夫妇日常活动的位置。|||An existing shared ground-floor space in Block B, suitable for a residents’ corner near Rahman and Noor.
 B 栋居民与换房屋主|||Block B neighbours and owners looking to move
 西侧社区空置房间|||West community room
 组屋西侧可改装的现有小房间；可设活动与转介服务，保留街角花园。|||An existing small room west of the blocks, suitable for activities and referrals while leaving the corner garden available.
-西侧长者与照护家庭|||Older and caregiving households on the west side
-南侧过街接驳处|||Southern crossing connection
-南侧道路与住宅步道之间的高差接驳；可增设坡道，不替代遮雨路线。|||A level change between the southern road and residential path. A ramp helps access but does not shelter the route.
+西侧老年人与照护家庭|||Older and caregiving households on the west side
+南侧人行道路缘|||Southern sidewalk curb
+在南侧步道末端降低路缘高差，接到斑马线。|||A low curb ramp links the end of the southern footpath to the zebra crossing.
 南侧家庭与行动不便的住户|||Southern households and neighbours with mobility needs
+食阁北侧公共用餐区|||North hawker dining terrace
+食阁旁铺装空地，可加盖并添桌椅。|||A paved terrace beside the existing hawker centre can take sheltered tables and seating.
+食阁摊主、顾客与附近居民|||Hawkers, customers and nearby residents
+商场入口前场|||Shopping centre entrance forecourt
+在既有商场外增设遮蔽和休息点，保留通往入口的通道。|||Add shelter and a rest point outside the existing shopping centre while retaining a clear route into it.
+购物居民与行动不便的访客|||Shoppers and visitors with mobility needs
+车站前接驳步道|||Station approach link
+在既有车站入口前改善步行接驳。|||Improve the walking connection across the forecourt of the existing station.
+乘客与从社区步行到站的居民|||Passengers and neighbours walking to the station
 暂时没有需要这项行动的情境。先观察社区或查看来信。|||No current situation needs this action. Observe the neighbourhood or check your mail.
 花园已有工程或设施，不能再承诺保留原状。|||The garden already has works or a facility. You cannot promise to keep it unchanged.
 请把设施放在描边范围内，并使用四分之一圈的朝向。|||Keep the facility within the outlined area and use a quarter-turn orientation.
 需要先完成居民角，再用现有空间安排相聚。|||Complete the residents’ corner before using it for gatherings.
 放置位置超出这片空间的边界。|||The placement is outside this space.
 走廊与坡道需要顺着现有通路放置。|||Linkways and ramps must follow the existing path.
+这张工程牌仅供案例预览。|||This project card is a case preview.
+这张牌在当前社区案例不可用。|||This card is unavailable in this neighbourhood case.
+这项工程需要顺着现有入口或通路放置。|||This project must align with the existing entrance or path.
 住在这里的人|||Your neighbours
 你的行动卡|||Your action cards
 打开全部牌库|||Open all cards

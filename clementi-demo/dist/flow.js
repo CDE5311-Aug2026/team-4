@@ -4,49 +4,169 @@
   const copy = (zh,en) => ({zh:zh,en:en});
   const content = {
     clementi: { name:copy('金文泰','Clementi'), tag:copy('已建成的老镇','An established town'), point:[103.765,1.315], available:true,
-      intro:copy('这里有人住了几十年，也有人近年才搬来。旧组屋与新高层并存，改造要在已经有人生活的地方进行。','Some households have lived here for decades; others have recently arrived. Older blocks and newer high-rises coexist, so every change happens around existing lives.'),
-      facts:[copy('金文泰地铁站 EW23，连接巴士与日常商业设施。','Clementi MRT (EW23), with bus connections and everyday shops.'),copy('金文泰购物中心于 2011 年启用，整合住房、商业和巴士转换站。','Clementi Mall opened in 2011 as an integrated development combining housing, retail and a bus interchange.'),copy('演示街区保留旧组屋、食阁、现有道路与有限公共空间。','The demonstration includes established blocks, a food court, existing paths and limited shared space.')],
-      people:[['chen',copy('陈玉英','Mdm Chen'),copy('想留在熟悉的社区，也能在雨天出门。','Wants to stay in familiar surroundings and still go out when it rains.')],['rahman',copy('拉赫曼与努尔','Rahman & Noor'),copy('想换小一点的房子，需要具体的支持。','Want a smaller home and a clear path to support.')],['lin',copy('林家','The Lin family'),copy('关心儿童空间，也每天依赖家人照看。','Need space for their children and rely on family support.')]],
-      invitation:copy('如果接手这里，你会先回应哪一户人的日常？','Whose everyday concern will you respond to first?') },
+      intro:copy('金文泰位于新加坡西南部，镇中心集中了组屋、巴刹熟食中心、综合诊疗所与地铁巴士服务。','Clementi is in south-western Singapore. Public housing, a market and food centre, a polyclinic, and MRT and bus services come together in its town centre.'),
+      facts:[copy('金文泰地铁站 EW23，连接巴士与日常商业设施。','Clementi MRT (EW23), with bus connections and everyday shops.'),copy('金文泰购物中心于2011年启用，整合住房、商业和巴士转换站。','Clementi Mall opened in 2011 as an integrated development combining housing, retail and a bus interchange.'),copy('镇中心还有巴刹熟食中心与综合诊疗所。','The town centre also has a market and food centre and a polyclinic.')] },
     punggol: { name:copy('榜鹅','Punggol'), tag:copy('新镇与年轻家庭','A newer town and young families'),point:[103.902,1.405],available:false,
       intro:copy('榜鹅是企划中已确定的另外一个案例，方向是新镇与年轻家庭的日常。目前尚未实现可玩内容。','Punggol is one of the three selected settings in the project, focusing on newer neighbourhoods and young families. This case is not yet playable.'),
-      facts:[copy('与金文泰不同的起始条件和设施需求。','A different set of starting conditions and everyday needs.'),copy('居民、问题池、地块和数值尚待研究与制作。','Residents, issues, land arrangements and game values still need research and implementation.')],people:[],invitation:copy('你可以先了解这个方向，再返回地图进入金文泰试玩。','You can explore the planned direction, then return to Clementi to play.') },
+      facts:[copy('关注新镇家庭的日常与公共设施。','The case focuses on family life and shared amenities in a newer town.')] },
     geylang: { name:copy('芽笼','Geylang'),tag:copy('多元而流动的社区','A diverse and changing community'),point:[103.886,1.318],available:false,
       intro:copy('芽笼是企划中已确定的第三个案例，方向是多元居民与较高流动性的社区。目前尚未实现可玩内容。','Geylang is the third selected setting, focusing on a diverse community with greater resident turnover. This case is not yet playable.'),
-      facts:[copy('关注不同背景、不同居住时长居民的相处。','Explores how neighbours with different backgrounds and lengths of stay share everyday life.'),copy('居民、问题池、地块和数值尚待研究与制作。','Residents, issues, land arrangements and game values still need research and implementation.')],people:[],invitation:copy('这个案例仍在筹备，你可以返回地图选择金文泰。','This case is still in preparation. Return to the map to enter Clementi.') }
+      facts:[copy('关注不同背景、不同居住时长居民的相处。','The case explores how neighbours with different backgrounds and lengths of stay share everyday life.')] }
   };
   let detailTab='history',historyStep=0,selectedAmenity='food',selectedAge=null,selectedPerson='chen',selectedChallenge=0;
   let options={},element=null,active=false,view='loading',language='zh',selected='clementi',transitioning=false,poll=null,loadStarted=0,sceneFailure='',fallback=false,changingLanguage=false;
   function buildingShape(x,y,w,h,color){return '<g><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+color+'"/><rect x="'+(x-3)+'" y="'+(y-4)+'" width="'+(w+6)+'" height="6" fill="#f0ddbb"/>'+Array.from({length:Math.max(1,Math.floor(h/17))},(_,r)=>Array.from({length:Math.max(1,Math.floor(w/14))},(_,c)=>'<rect x="'+(x+5+c*14)+'" y="'+(y+7+r*17)+'" width="7" height="9" fill="'+((r+c)%3?'#edca83':'#4a5767')+'"/>').join('')).join('')+'</g>';}
   function neighbourhoodPicture(stage){return '<svg viewBox="0 0 620 230" aria-hidden="true" class="flow-pixel-neighbourhood"><defs><linearGradient id="flow-research-sky" x2="0" y2="1"><stop stop-color="#796b85"/><stop offset="1" stop-color="#e6ac89"/></linearGradient></defs><rect width="620" height="230" fill="url(#flow-research-sky)"/><rect y="155" width="620" height="75" fill="#89987e"/><path d="M0 202H620M420 160V230" stroke="#636777" stroke-width="22"/><path d="M0 202H410M433 202H620" stroke="#d9d1bd" stroke-width="2" stroke-dasharray="12 12"/>'+buildingShape(40,66,84,99,'#b9aaa9')+buildingShape(150,87,105,78,'#d2b8a4')+buildingShape(475,51,83,114,'#c38d7b')+(stage>0?buildingShape(280,32,70,133,'#a9bbb0'):'')+'<rect x="290" y="146" width="103" height="32" fill="#e3bc8e"/><path d="M278 148L339 123L405 148Z" fill="#bc7558"/><rect x="309" y="156" width="16" height="22" fill="#5e7774"/><rect x="340" y="155" width="37" height="12" fill="#4c5e69"/><g class="flow-picture-walker"><rect x="130" y="178" width="10" height="14" fill="#466d76"/><rect x="131" y="170" width="8" height="8" fill="#d7a47f"/><path d="M132 192V198M138 192V198" stroke="#28374b" stroke-width="3"/></g>'+(stage>1?'<rect x="235" y="175" width="43" height="5" fill="#70a59a"/><rect x="240" y="180" width="3" height="14" fill="#ede1c7"/><rect x="271" y="180" width="3" height="14" fill="#ede1c7"/>':'')+'<circle cx="578" cy="133" r="19" fill="#5e805f"/><rect x="575" y="145" width="6" height="30" fill="#856b5b"/></svg>';}
-  function historyPanel(){const steps=[
-    {year:'1975–1979',title:copy('从新镇开始','A new town takes shape'),body:copy('金文泰主要在这段时期发展，住房与日常设施逐步组成一座自给自足的新镇。','Clementi developed mainly during these years, bringing housing and everyday amenities together in a self-sufficient new town.')},
-    {year:'2011',title:copy('住房、商业与交通连接起来','Housing, shops and transport connect'),body:copy('金文泰购物中心启用，将公共住房、商业设施和巴士转换站整合在同一综合发展中。','Clementi Mall opened as an integrated development combining public housing, commercial facilities and a bus interchange.')},
-    {year:text('今天','Today'),title:copy('在已有日常里继续更新','Changes around existing lives'),body:copy('游戏从这里开始：老邻居与新住户共享食阁、路径和公共空间。下方的具体街区为游戏示意。','The game begins here: long-term neighbours and newer households share food centres, paths and common spaces. The game neighbourhood itself is illustrative.')}
-  ],current=steps[historyStep];return '<div class="flow-section-heading"><span class="flow-section-icon">◷</span><div><h2>'+text('历史','History')+'</h2><p>'+text('点选时间节点，看社区怎样发展。','Select a year to explore the town’s development.')+'</p></div></div>'+neighbourhoodPicture(historyStep)+'<div class="flow-history-buttons">'+steps.map((s,i)=>button('history-step',s.year,historyStep===i?'selected':'','data-index="'+i+'" aria-pressed="'+(historyStep===i)+'"')).join('')+'</div><div class="flow-history-description"><strong>'+escape(t(current.title))+'</strong><p>'+escape(t(current.body))+'</p></div><a class="flow-source-link" href="'+root.CM_COMMUNITY.sources.history.url+'" target="_blank" rel="noopener noreferrer">'+text('背景来源：SG101 ↗','Background: SG101 ↗')+'</a>';}
-  function existingPanel(){const hotspots={
-    homes:{icon:'⌂',name:copy('旧组屋与新高层','Established blocks and newer towers'),body:copy('不同居住年限的家庭在这里生活。改造需要绕开原有住宅、出入口与日常通路。','Households with different lengths of stay live here. Changes must work around existing homes, entrances and daily routes.'),left:24,top:38},
-    food:{icon:'☕',name:copy('市场、食阁与商店','Market, food centre and shops'),body:copy('买菜、早餐和遇见熟人都发生在日常设施附近。食阁既是服务地点，也是相遇的地方。','Shopping, breakfast and familiar encounters happen around everyday amenities. The food centre is also a place to meet.'),left:55,top:68},
-    transport:{icon:'↔',name:copy('交通与服务方向','Transport and service connections'),body:copy('地铁、巴士和诊所连接日常目的地。具体路线与设施覆盖需要在游戏里观察。','MRT, buses and the polyclinic connect everyday destinations. Explore routes and service access in the game.'),left:84,top:40},
-    space:{icon:'♧',name:copy('有限的公共空间','Limited shared space'),body:copy('底层、空置房间和花园有不同用途；一处空间的变化可能让不同家庭有不同感受。','Void decks, vacant rooms and gardens have different uses. A change to one space can affect households differently.'),left:29,top:80}
-  },chosen=hotspots[selectedAmenity];return '<div class="flow-section-heading"><span class="flow-section-icon">⌂</span><div><h2>'+text('现有情况','Existing conditions')+'</h2><p>'+text('点一下街区中的四个位置。','Select the four places in the neighbourhood.')+'</p></div></div><div class="flow-amenity-map">'+neighbourhoodPicture(2)+Object.entries(hotspots).map(([id,h])=>'<button class="flow-amenity-pin '+(id===selectedAmenity?'selected':'')+'" style="left:'+h.left+'%;top:'+h.top+'%" data-flow-action="amenity" data-id="'+id+'" aria-label="'+escape(t(h.name))+'" aria-pressed="'+(id===selectedAmenity)+'">'+h.icon+'</button>').join('')+'</div><div class="flow-hotspot-description"><strong>'+escape(t(chosen.name))+'</strong><p>'+escape(t(chosen.body))+'</p></div><p class="flow-illustrative">'+text('功能位置为示意，不是金文泰逐栋复刻。','Functional layout is illustrative, not a block-by-block survey of Clementi.')+'</p>';}
-  function challengesPanel(){const items=[
-    {icon:'⌁',title:copy('更新时，日常不能消失','Keep everyday life going during change'),body:copy('路径要改善，居民也还要买菜、出门和休息。施工与生活怎样相处？','Paths need improvement, while neighbours still need to shop, travel and rest. How can construction and daily life coexist?'),scene:'route'},
-    {icon:'♧',title:copy('同一空间，不同期待','One space, different hopes'),body:copy('有人需要照护支持，有人需要儿童空间。有限的地方怎样安排？','Some households need care support; others need space for children. How will limited shared space be used?'),scene:'garden'},
-    {icon:'♟',title:copy('先认识人，再作决定','Know the neighbours before deciding'),body:copy('老住户、新家庭和轮班租户有不同节奏。怎样让他们被看见，也彼此理解？','Long-term residents, newer families and shift workers have different rhythms. How can their voices be heard and understood?'),scene:'neighbours'}
-  ],item=items[selectedChallenge];let visual='';try{visual=root.CM_VISUAL?.scene?.(item.scene,language)||'';}catch{}return '<div class="flow-section-heading"><span class="flow-section-icon">◇</span><div><h2>'+text('管理挑战','Challenges')+'</h2><p>'+text('由社区背景提炼的游戏情境。','Game situations drawn from the neighbourhood context.')+'</p></div></div><div class="flow-challenge-options">'+items.map((c,i)=>'<button class="flow-challenge '+(i===selectedChallenge?'selected':'')+'" data-flow-action="challenge" data-index="'+i+'" aria-pressed="'+(i===selectedChallenge)+'"><span>'+c.icon+'</span>'+escape(t(c.title))+'</button>').join('')+'</div><div class="flow-challenge-picture">'+(visual||neighbourhoodPicture(2))+'</div><p class="flow-challenge-question">'+escape(t(item.body))+'</p>';
+  function sectionHeading(icon, title, subtitle) {
+    return '<div class="flow-section-heading"><span class="flow-section-icon" aria-hidden="true">' + icon +
+      '</span><div><h2>' + escape(title) + '</h2><p>' + escape(subtitle) + '</p></div></div>';
   }
-  function demographicsPanel(){const d=root.CM_COMMUNITY.demographics,groups=d.ageGroups;return '<section class="flow-demographics"><div class="flow-section-heading"><span class="flow-section-icon">▥</span><div><h2>'+text('谁住在金文泰？','Who lives in Clementi?')+'</h2><p>'+text('2026年6月 · 金文泰规划区 · 居民人口','June 2026 · Clementi Planning Area · Resident population')+'</p></div></div><p class="flow-demographic-invite">'+text('点选年龄组，认识相关的虚构角色。','Select an age group to meet a related fictional household.')+'</p><div class="flow-age-bars">'+groups.map(g=>'<button class="flow-age-bar '+(selectedAge===g.id?'selected':'')+'" data-flow-action="age-group" data-id="'+g.id+'" aria-pressed="'+(selectedAge===g.id)+'"><span>'+escape(language==='en'?g.labelEn:g.label)+'</span><i><b style="width:'+g.percent/30*100+'%"></b></i><strong>'+g.percent.toFixed(1)+'%</strong><small>≈ '+g.count.toLocaleString('en-US')+'</small></button>').join('')+'</div><div class="flow-demographic-foot"><span>'+text('汇总约104,830人；原始单元格取整至10人。','Approximate aggregate: 104,830; source cells rounded to 10.')+'</span><button class="flow-button plain" data-flow-action="age-group" data-id="all">'+text('查看全部角色','Show all households')+'</button></div><details class="flow-evidence"><summary>'+text('统计范围与来源','Statistical scope and source')+'</summary><p>'+escape(t(d.definition))+'</p><p>'+escape(t(d.method))+'</p><p>'+escape(t(d.scope))+'</p><p>'+text('2026年规划区边界按 URA Master Plan 2025。','2026 planning-area boundaries follow URA Master Plan 2025.')+'</p><a href="'+d.sourceUrl+'" target="_blank" rel="noopener noreferrer">SingStat ↗</a> · <a href="'+root.CM_COMMUNITY.sources.definition.url+'" target="_blank" rel="noopener noreferrer">'+text('人口口径 ↗','Population definition ↗')+'</a></details></section>';}
-  function personaMatches(p){if(!selectedAge)return true;return p.ageBand===selectedAge||(p.id==='lin'&&selectedAge==='0-14')||(p.id==='kumar'&&selectedAge==='65+');}
-  function neighboursPanel(){const community=root.CM_COMMUNITY,people=Object.values(community.personas),person=community.personas[selectedPerson]||people[0];return '<aside class="flow-neighbourhood-people"><div class="flow-section-heading"><span class="flow-section-icon">♟</span><div><h2>'+text('先认识邻居','Meet the neighbours')+'</h2><p>'+text('八户虚构人物，各有自己的日常。','Eight fictional households, each with a daily life.')+'</p></div></div><div class="flow-persona-grid">'+people.map(p=>'<button class="flow-persona-pick '+(p.id===person.id?'selected':'')+(selectedAge&&!personaMatches(p)?' muted':'')+'" data-flow-action="person" data-id="'+p.id+'" aria-pressed="'+(p.id===person.id)+'"><span class="flow-persona-thumbnail">'+portrait(p.id)+'</span><span><strong>'+escape(t(p.name))+'</strong><small>'+escape(t(p.role))+'</small></span></button>').join('')+'</div><section class="flow-persona-detail" aria-live="polite"><div class="flow-persona-heading"><div class="flow-persona-art">'+portrait(person.id)+'</div><div><h3>'+escape(t(person.name))+'</h3><span>'+escape(person.ageRange?person.ageRange.join('–'):person.ages?person.ages.join(' / '):person.age)+' '+text('岁','years')+' · '+escape(t(person.gender))+'</span><strong>'+escape(t(person.role))+'</strong></div></div><div class="flow-persona-facts"><span>⌂ '+escape(t(person.home))+'</span><span>◷ '+escape(t(person.tenure))+'</span><span>♟ '+escape(t(person.family))+'</span></div><p class="flow-persona-routine">'+escape(t(person.routine))+'</p><details class="flow-evidence"><summary>'+text('这个角色的创作依据','How this character was developed')+'</summary><p>'+escape(t(person.evidence))+'</p><p>'+escape(t(community.disclaimer))+'</p><a href="'+(person.id==='students'||person.id==='huang'?community.sources.history.url:community.sources.geography.url)+'" target="_blank" rel="noopener noreferrer">'+text('查看背景资料 ↗','View contextual evidence ↗')+'</a></details></section></aside>';}
-  function communityDetails(){if(selected!=='clementi'||!root.CM_COMMUNITY)return details();return shell('<main class="flow-details improved-details"><div class="flow-kicker">'+text('PLAYABLE CASE · 本次可玩','PLAYABLE CASE')+'</div><div class="flow-details-title"><div><h1>'+text('金文泰','Clementi')+'</h1><p>'+text('一座已经有人生活的老镇。先了解这里，再走到楼下。','An established town already full of lives. Get to know it, then go downstairs.')+'</p></div><span class="flow-case-emblem">⌂</span></div><nav class="flow-detail-tabs" aria-label="'+text('社区背景','Community background')+'">'+[['history','◷',text('历史','History')],['existing','⌂',text('现有情况','Existing conditions')],['challenges','◇',text('挑战','Challenges')]].map(([id,icon,label])=>'<button class="flow-detail-tab '+(id===detailTab?'selected':'')+'" data-flow-action="detail-tab" data-id="'+id+'" aria-pressed="'+(id===detailTab)+'"><span>'+icon+'</span>'+label+'</button>').join('')+'</nav><div class="flow-research-layout"><div class="flow-research-main"><section class="flow-research-panel">'+(detailTab==='history'?historyPanel():detailTab==='existing'?existingPanel():challengesPanel())+'</section>'+demographicsPanel()+'</div>'+neighboursPanel()+'</div><div class="flow-entry-bottom"><p>'+text('你接手的是他们共同生活的社区。','You will take care of the neighbourhood they share.')+'</p><div class="flow-actions">'+button('enter',text('接手金文泰 →','Enter Clementi →'),'gold')+button('map',text('← 返回地图','← Back to map'),'secondary')+'</div></div></main>','details-view');}
-  function handleEnhanced(event){const target=event.target.closest('[data-flow-action]');if(!target||!element?.contains(target))return;const action=target.dataset.flowAction,id=target.dataset.id;if(action==='detail-tab'){detailTab=id;render();return;}if(action==='history-step'){historyStep=Number(target.dataset.index)||0;render();return;}if(action==='amenity'){selectedAmenity=id;render();return;}if(action==='challenge'){selectedChallenge=Number(target.dataset.index)||0;render();return;}if(action==='person'){selectedPerson=id;render();return;}if(action==='age-group'){selectedAge=id==='all'?null:id;const match=Object.values(root.CM_COMMUNITY.personas).find(personaMatches);if(match)selectedPerson=match.id;render();return;}handle(event);}
+  function sourceLinks(keys) {
+    const links = keys.map(key => {
+      const source = root.CM_COMMUNITY.sources[key];
+      return '<a class="flow-source-link" href="' + escape(source.url) +
+        '" target="_blank" rel="noopener noreferrer">' + escape(t(source.title)) + ' ↗</a>';
+    });
+    return '<div class="flow-fact-sources">' + links.join('') + '</div>';
+  }
+  function historyPanel() {
+    const steps = root.CM_COMMUNITY.profile.history;
+    const current = steps[historyStep];
+    const years = steps.map((step, index) => button('history-step', step.year, historyStep === index ? 'selected' : '',
+      'data-index="' + index + '" aria-pressed="' + (historyStep === index) + '"'));
+    return sectionHeading('◷', text('历史', 'History'), text('从新镇开发到镇中心发展', 'From the new town to its town centre')) +
+      '<figure class="flow-fact-picture">' + neighbourhoodPicture(historyStep) +
+      '<figcaption>' + text('历史街景插画', 'Illustration of the townscape') + '</figcaption></figure>' +
+      '<div class="flow-history-buttons">' + years.join('') + '</div>' +
+      '<div class="flow-fact-copy" aria-live="polite"><h3>' + escape(t(current.title)) + '</h3><p>' +
+      escape(t(current.body)) + '</p></div>' + sourceLinks(current.sources);
+  }
+  function existingPanel() {
+    const hotspots = root.CM_COMMUNITY.profile.conditions;
+    const chosen = hotspots[selectedAmenity];
+    const pins = Object.entries(hotspots).map(([id, spot]) => {
+      const label = escape(t(spot.name));
+      return '<button class="flow-amenity-pin ' + (id === selectedAmenity ? 'selected' : '') +
+        '" style="left:' + spot.left + '%;top:' + spot.top + '%" data-flow-action="amenity" data-id="' + id +
+        '" title="' + label + '" aria-label="' + label + '" aria-pressed="' + (id === selectedAmenity) + '">' + spot.icon + '</button>';
+    });
+    return sectionHeading('⌂', text('现有情况', 'Existing conditions'), text('住房、公共交通与日常设施', 'Housing, transport and everyday amenities')) +
+      '<figure class="flow-fact-picture"><div class="flow-amenity-map">' + neighbourhoodPicture(2) + pins.join('') +
+      '</div><figcaption>' + text('街景插画 · 点击图标查看各项设施', 'Townscape illustration · Select an icon to explore an amenity') + '</figcaption></figure>' +
+      '<div class="flow-fact-copy" aria-live="polite"><h3>' + escape(t(chosen.name)) + '</h3><p>' +
+      escape(t(chosen.body)) + '</p></div>' + sourceLinks(chosen.sources);
+  }
+  function challengesPanel() {
+    const items = root.CM_COMMUNITY.profile.challenges;
+    const item = items[selectedChallenge];
+    const controls = items.map((challenge, index) =>
+      '<button class="flow-challenge ' + (index === selectedChallenge ? 'selected' : '') +
+      '" data-flow-action="challenge" data-index="' + index + '" aria-pressed="' + (index === selectedChallenge) +
+      '"><span aria-hidden="true">' + challenge.icon + '</span>' + escape(t(challenge.title)) + '</button>');
+    return sectionHeading('◇', text('现实挑战', 'Current challenges'),
+      text('老住区更新、轨道工程和公共空间', 'Estate renewal, rail construction and shared space')) +
+      '<div class="flow-challenge-options">' + controls.join('') + '</div>' +
+      '<div class="flow-fact-copy flow-challenge-detail" aria-live="polite"><p>' + escape(t(item.body)) +
+      '</p><p>' + escape(t(item.response)) + '</p></div>' + sourceLinks(item.sources);
+  }
+  function demographicsPanel() {
+    const data = root.CM_COMMUNITY.demographics;
+    const chosen = data.ageGroups.find(group => group.id === selectedAge);
+    const ageLabel = group => language === 'en' ? group.labelEn : group.label;
+    const formatCount = count => count.toLocaleString('en-US');
+    const bars = data.ageGroups.map(group => {
+      const isSelected = selectedAge === group.id;
+      const label = ageLabel(group) + ' · ' + group.percent.toFixed(1) + '% · ≈ ' + formatCount(group.count);
+      return '<button class="flow-age-bar ' + (isSelected ? 'selected' : '') +
+        '" data-flow-action="age-group" data-id="' + group.id + '" aria-pressed="' + isSelected +
+        '" aria-label="' + escape(label) + '"><span>' + escape(ageLabel(group)) + '</span><i aria-hidden="true"><b style="width:' +
+        (group.percent / 30 * 100) + '%"></b></i><strong>' + group.percent.toFixed(1) + '%</strong><small>≈ ' +
+        formatCount(group.count) + '</small></button>';
+    });
+    const current = chosen
+      ? text(ageLabel(chosen) + '的居民约有' + formatCount(chosen.count) + '人，占' + chosen.percent.toFixed(1) + '%。',
+        'About ' + formatCount(chosen.count) + ' residents in this group, or ' + chosen.percent.toFixed(1) + '% of the area.')
+      : text('选择年龄组查看人数与占比。条形刻度上限为30%。', 'Select an age group for its count and share. Bars use a 0–30% scale.');
+    return '<section class="flow-demographics">' + sectionHeading('▥', text('居民人口', 'Resident population'),
+      text('2026年6月 · 金文泰规划区', 'June 2026 · Clementi Planning Area')) +
+      '<p class="flow-population-total"><strong>≈ ' + formatCount(data.total) + '</strong> ' + text('名居民', 'residents') +
+      '</p><div class="flow-age-bars">' + bars.join('') + '</div><p class="flow-age-summary" aria-live="polite">' +
+      escape(current) + '</p><details class="flow-evidence"><summary>' + text('统计范围与取整说明', 'Scope and rounding') +
+      '</summary><p>' + escape(t(data.definition)) + '</p><p>' + escape(t(data.method)) +
+      '</p><p>' + escape(t(data.scope)) + ' ' + text('规划区采用 URA Master Plan 2025 的边界。', 'The planning area follows the URA Master Plan 2025 boundary.') +
+      '</p></details>' + sourceLinks(['geography', 'definition']) + '</section>';
+  }
+  function neighboursPanel() {
+    const community = root.CM_COMMUNITY;
+    const people = Object.values(community.personas);
+    const person = community.personas[selectedPerson] || people[0];
+    const cards = people.map(profile => '<button class="flow-persona-pick ' + (profile.id === person.id ? 'selected' : '') +
+      '" data-flow-action="person" data-id="' + profile.id + '" aria-pressed="' + (profile.id === person.id) +
+      '"><span class="flow-persona-thumbnail">' + portrait(profile.id) + '</span><span><strong>' + escape(t(profile.name)) +
+      '</strong><small>' + escape(t(profile.role)) + '</small></span></button>');
+    const age = person.ageRange ? person.ageRange.join('–') : person.ages ? person.ages.join(' / ') : person.age;
+    return '<section class="flow-neighbourhood-people flow-reality-people">' +
+      sectionHeading('♟', text('虚构人物', 'Fictional characters'), text('八户角色的日常与家庭背景', 'Eight households and their daily lives')) +
+      '<p class="flow-character-notice">' + escape(t(community.disclaimer)) + '</p><div class="flow-persona-grid">' +
+      cards.join('') + '</div><section class="flow-persona-detail" aria-live="polite"><div class="flow-persona-heading">' +
+      '<div class="flow-persona-art">' + portrait(person.id) + '</div><div><h3>' + escape(t(person.name)) +
+      '</h3><span>' + escape(age) + ' ' + text('岁', 'years') + ' · ' + escape(t(person.gender)) +
+      '</span><strong>' + escape(t(person.role)) + '</strong></div></div><div class="flow-persona-facts"><span>⌂ ' +
+      escape(t(person.home)) + '</span><span>◷ ' + escape(t(person.tenure)) + '</span><span>♟ ' + escape(t(person.family)) +
+      '</span></div><p class="flow-persona-routine">' + escape(t(person.routine)) +
+      '</p><details class="flow-evidence"><summary>' + text('角色创作说明', 'Character notes') +
+      '</summary><p>' + escape(t(person.evidence)) + '</p></details></section></section>';
+  }
+  function communityDetails() {
+    if (selected !== 'clementi' || !root.CM_COMMUNITY?.profile) return details();
+    const tabs = [
+      ['history', '◷', text('历史', 'History')],
+      ['existing', '⌂', text('现有情况', 'Existing conditions')],
+      ['challenges', '◇', text('现实挑战', 'Current challenges')],
+      ['people', '♟', text('虚构人物', 'Fictional characters')]
+    ];
+    const controls = tabs.map(([id, icon, label]) =>
+      '<button class="flow-detail-tab ' + (id === detailTab ? 'selected ' : '') + (id === 'people' ? 'fiction-tab' : '') +
+      '" data-flow-action="detail-tab" data-id="' + id + '" aria-pressed="' + (id === detailTab) +
+      '"><span aria-hidden="true">' + icon + '</span>' + label + '</button>');
+    const sections = {history:historyPanel, existing:existingPanel, challenges:challengesPanel};
+    const body = detailTab === 'people' ? neighboursPanel() : '<div class="flow-research-layout flow-reality-layout">' +
+      '<section class="flow-research-panel">' + sections[detailTab]() + '</section>' + demographicsPanel() + '</div>';
+    return shell('<main class="flow-details improved-details"><div class="flow-kicker">SINGAPORE · CLEMENTI</div>' +
+      '<div class="flow-details-title"><div><h1>' + text('金文泰', 'Clementi') + '</h1><p>' +
+      escape(t(root.CM_COMMUNITY.profile.summary)) + '</p></div><span class="flow-case-emblem" aria-hidden="true">⌂</span></div>' +
+      '<nav class="flow-detail-tabs" aria-label="' + text('社区资料', 'Community profile') + '">' + controls.join('') +
+      '</nav>' + body + '<div class="flow-entry-bottom"><div class="flow-actions">' +
+      button('map', text('← 返回地图', '← Back to map'), 'secondary') +
+      button('enter', text('进入金文泰游戏 →', 'Enter the Clementi game →'), 'gold') + '</div></div></main>',
+      'details-view', text('金文泰社区资料 · 各栏目附来源', 'Clementi community profile · Sources listed in each section'));
+  }
+  function handleEnhanced(event) {
+    const target = event.target.closest('[data-flow-action]');
+    if (!target || !element?.contains(target)) return;
+    const {flowAction:action,id,index} = target.dataset;
+    switch (action) {
+      case 'detail-tab': detailTab = id; break;
+      case 'history-step': historyStep = Number(index); break;
+      case 'amenity': selectedAmenity = id; break;
+      case 'challenge': selectedChallenge = Number(index); break;
+      case 'person': selectedPerson = id; break;
+      case 'age-group': selectedAge = selectedAge === id ? null : id; break;
+      default: handle(event); return;
+    }
+    render();
+    const key = id === undefined ? 'data-index="' + index + '"' : 'data-id="' + id + '"';
+    element.querySelector?.('[data-flow-action="' + action + '"][' + key + ']')?.focus({preventScroll:true});
+  }
   const escape = value => String(value==null?'':value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const t = pair => pair[language] || pair.zh;
   const text = (zh,en) => language==='en'?en:zh;
   const button = (action,label,cls,extra) => '<button class="flow-button '+(cls||'')+'" data-flow-action="'+action+'" '+(extra||'')+'>'+escape(label)+'</button>';
   function switcher(){return '<div class="flow-language" aria-label="Language / 语言">'+button('language','中文',language==='zh'?'selected':'','data-language="zh" aria-pressed="'+(language==='zh')+'"')+button('language','English',language==='en'?'selected':'','data-language="en" aria-pressed="'+(language==='en')+'"')+'</div>';}
-  function shell(body,cls){return '<div class="flow-inner '+(cls||'')+'"><header class="flow-top"><span class="flow-wordmark">Downstairs <b>·</b> '+text('楼下','Clementi')+'</span>'+switcher()+'</header>'+body+'<footer class="flow-footer">'+text('金文泰单案例试玩 · 居民与故事均为虚构','Clementi playable prototype · Fictional residents and stories')+'</footer></div>';}
+  function shell(body,cls,footer=text('金文泰单案例试玩 · 居民与故事均为虚构','Clementi playable prototype · Fictional residents and stories')) {
+    return '<div class="flow-inner '+(cls||'')+'"><header class="flow-top"><span class="flow-wordmark">Downstairs <b>·</b> '+
+      text('楼下','Clementi')+'</span>'+switcher()+'</header>'+body+'<footer class="flow-footer">'+escape(footer)+'</footer></div>';
+  }
   function ensure(){
     if(!doc)return;
     if(!doc.querySelector('[data-entry-style]')&&!Array.from(doc.querySelectorAll('link[rel="stylesheet"]')).some(l=>/\/flow\.css(?:\?|$)/.test(l.href))){const link=doc.createElement('link');link.rel='stylesheet';link.href='flow.css';link.dataset.entryStyle='true';doc.head.appendChild(link);}
@@ -89,7 +209,34 @@
   }
   function map(){const c=content[selected];return shell('<main class="flow-map-view"><div class="flow-map-heading"><div><div class="flow-kicker">SINGAPORE · 3 NEIGHBOURHOODS</div><h1>'+text('选择一片社区','Choose a neighbourhood')+'</h1><p>'+text('地点的位置是真实的；各案例中的街区与居民为游戏示意。','The locations are real. The game neighbourhoods and residents are illustrative.')+'</p></div>'+button('title',text('← 返回标题','← Back to title'),'plain')+'</div><div class="flow-map-layout"><section class="flow-map-board">'+geographicMap()+'<div class="flow-map-legend"><span><i></i>'+text('本次可玩','Playable now')+'</span><span><i class="planned"></i>'+text('案例筹备中','In preparation')+'</span></div><p class="flow-map-source">'+text('真实地理轮廓 · 地点为概略定位','Geographic outline · Approximate location markers')+'</p></section><aside class="flow-case-list">'+Object.entries(content).map(([id,item])=>'<button class="flow-case '+(id===selected?'selected':'')+'" data-flow-action="select-case" data-case="'+id+'"><span><strong>'+escape(t(item.name))+'</strong><b>'+text(item.available?'本次可玩':'筹备中',item.available?'PLAYABLE':'IN PREPARATION')+'</b></span><small>'+escape(t(item.tag))+'</small></button>').join('')+'<div class="flow-case-preview"><h2>'+escape(t(c.name))+'</h2><p>'+escape(t(c.intro))+'</p>'+button('details',text('了解这个社区 →','Explore this neighbourhood →'),'gold')+'</div></aside></div></main>','map-view');}
   function portrait(id){try{return (root.CM_ART?.portrait?.(id)||'').replace(/aria-label="([^"]*)"/g,(_,label)=>'aria-label="'+escape(root.CM_I18N?.t?.(label)||label)+'"');}catch{return '';}}
-  function details(){const c=content[selected];return shell('<main class="flow-details"><div class="flow-kicker">'+text(c.available?'PLAYABLE CASE · 本次可玩':'CASE IN PREPARATION · 案例筹备中',c.available?'PLAYABLE CASE':'CASE IN PREPARATION')+'</div><h1>'+escape(t(c.name))+'</h1><p class="flow-intro">'+escape(t(c.intro))+'</p><div class="flow-details-grid"><section><h2>'+text('现有情况','Existing conditions')+'</h2><ul>'+c.facts.map(f=>'<li>'+escape(t(f))+'</li>').join('')+'</ul><div class="flow-note">'+text('这是以真实地点为背景的示意街区。用地、预算、人手、工期、配额状态与效果数值均为试玩设定；不代表真实规划或统计。','This is an illustrative neighbourhood set in a real place. Land, budget, staffing, construction time, quota conditions and numerical effects are game assumptions, not real plans or statistics.')+'</div></section><section><h2>'+text(c.people.length?'你会遇见的邻居':'案例准备情况',c.people.length?'Neighbours you will meet':'Case status')+'</h2>'+ (c.people.length?'<div class="flow-people">'+c.people.map(p=>'<div class="flow-person"><div class="flow-person-art">'+portrait(p[0])+'</div><div><strong>'+escape(t(p[1]))+'</strong><p>'+escape(t(p[2]))+'</p></div></div>').join('')+'</div><small class="flow-fiction">'+text('全部人物为虚构，不对应真实住户。','All characters are fictional and do not represent real households.')+'</small>':'<div class="flow-planned">'+text('本案例尚未制作可玩内容。<br>这个位置和简介用于展示三案例的整体结构。','This case has no playable content yet.<br>Its location and introduction show the planned three-case structure.')+'</div>')+'</section></div><p class="flow-invitation">'+escape(t(c.invitation))+'</p><div class="flow-actions">'+(c.available?button('enter',text('接手金文泰 →','Enter Clementi →'),'gold'):button('unavailable',text('案例筹备中','Case in preparation'),'secondary','disabled'))+button('map',text('← 返回地图','← Back to map'),'secondary')+'</div></main>','details-view');}
+  function conceptPreview() {
+    const catalog = root.CM_ENGINE?.catalogFor?.(selected) || [];
+    const cards = catalog.filter(card => card.previewOnly);
+    if (!cards.length) return '';
+    return '<section class="flow-concept-section">' + sectionHeading('◇', text('设施概念预览', 'Facility concepts'),
+      text('本案例筹备中的设计草案', 'Design previews for this upcoming case')) +
+      '<div class="flow-concept-grid">' + cards.map(card => {
+        const title = language === 'en' ? card.titleEn : card.title;
+        const description = language === 'en' ? card.descEn : card.desc;
+        return '<article class="flow-concept-card"><small>' + text('概念设施', 'Concept facility') +
+          '</small><h3>' + escape(title) + '</h3><p>' + escape(description) + '</p></article>';
+      }).join('') + '</div></section>';
+  }
+  function details() {
+    const place = content[selected];
+    const label = place.available ? 'CLEMENTI · SINGAPORE' : text('案例筹备中', 'Case in preparation');
+    const facts = place.facts.map(fact => '<li>' + escape(t(fact)) + '</li>').join('');
+    const description = '<section class="flow-research-panel"><h2>' +
+      (place.available ? text('社区资料', 'Community profile') : text('案例方向', 'Case focus')) +
+      '</h2><ul class="flow-case-facts">' + facts + '</ul></section>';
+    const entry = place.available ? button('enter', text('进入金文泰游戏 →', 'Enter the Clementi game →'), 'gold')
+      : button('unavailable', text('案例筹备中', 'Case in preparation'), 'secondary', 'disabled');
+    return shell('<main class="flow-details"><div class="flow-kicker">' + escape(label) + '</div><h1>' +
+      escape(t(place.name)) + '</h1><p class="flow-intro">' + escape(t(place.intro)) + '</p>' +
+      '<div class="flow-legacy-profile">' + description + (place.available ? '' : conceptPreview()) +
+      '</div><div class="flow-actions">' + button('map', text('← 返回地图', '← Back to map'), 'secondary') + entry +
+      '</div></main>', 'details-view');
+  }
   function render(){if(!element)return;ensure();element.hidden=!active;element.setAttribute('lang',language==='en'?'en':'zh-CN');element.className='flow-stage-'+view+(fallback?' is-fallback':'');if(!active)return;if(view==='loading'){loading();return;}element.innerHTML=view==='title'?title():view==='map'?map():view==='details'?communityDetails():shell('<main class="flow-entering"><div class="flow-kicker">'+text('CLEMENTI · 金文泰','CLEMENTI · SINGAPORE')+'</div><h1>'+text('走到楼下','Going downstairs')+'</h1><p>'+text('先听听陈玉英的近况。','Begin by hearing from Mdm Chen.')+'</p></main>','entering-view');}
   function setLanguage(lang){const next=/^en/i.test(lang)?'en':'zh';language=next;if(changingLanguage)return;changingLanguage=true;try{if(root.CM_I18N?.getLanguage?.()!==next)root.CM_I18N?.setLanguage?.(next);}finally{changingLanguage=false;}if(active)render();}
   function enter(resume){if(transitioning)return;transitioning=true;view='entering';render();const reduced=root.matchMedia?.('(prefers-reduced-motion: reduce)').matches;root.setTimeout(()=>{active=false;transitioning=false;element.hidden=true;if(fallback){const fallbackEl=doc.getElementById('world');if(fallbackEl)fallbackEl.hidden=false;const sceneEl=doc.getElementById('world-scene');if(sceneEl)sceneEl.hidden=true;}const callback=options.onEnter||(resume?options.onContinue:null);callback?.({caseId:'clementi',resume:!!resume});doc.dispatchEvent(new CustomEvent('cm:entered',{detail:{caseId:'clementi',resume:!!resume}}));},reduced?0:650);}

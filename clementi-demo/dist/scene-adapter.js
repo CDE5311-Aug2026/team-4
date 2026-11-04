@@ -57,8 +57,8 @@
         selected: selected || null,
         selectedPlot: currentOptions.selectedPlot || null,
         showLand: currentOptions.showLand !== false,
-        validPlots: c && Array.isArray(c.land) ? c.land : [],
-        issues: (Array.isArray(currentOptions.issues) ? currentOptions.issues : (state.issues || []).filter(function (issue) { return issue.status === 'open'; })).filter(function(issue){return (issue.channel || root.CM_DATA.issueChannels[issue.id])==='world';}).slice(0,3),
+        validPlots: !selected ? [] : Array.isArray(currentOptions.validPlots) ? currentOptions.validPlots : root.CM_ENGINE?.eligiblePlots?.(state,selected) || c?.land || [],
+        issues: (Array.isArray(currentOptions.issues) ? currentOptions.issues : (state.issues || []).filter(function (issue) { return issue.status === 'open'; })).filter(function(issue){return (issue.channel || root.CM_DATA.issueChannels[issue.id])==='world';}),
         focusIssue: currentOptions.focusIssue || null,
         language: currentOptions.language || 'zh',
         paused: currentOptions.paused !== false,
@@ -94,6 +94,8 @@
   root.CM_SCENE = {
     sync: sync,
     focusIssue: function (id) { return root.HDBScene && root.HDBScene.focusIssue ? root.HDBScene.focusIssue(id) : false; },
+    focusPlot: function (id) { return root.HDBScene?.focusPlot?.(id) || false; },
+    celebrate: function (event) { return root.HDBScene?.celebrate?.(event) || false; },
     plotIds: plotIds.slice(),
     diagnostics: function () { return root.HDBScene && root.HDBScene.diagnostics ? root.HDBScene.diagnostics() : { ready: false }; }
   };

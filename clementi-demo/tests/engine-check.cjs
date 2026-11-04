@@ -13,7 +13,7 @@ const D = context.CM_DATA;
 let s = E.create();
 assert.equal(E.metrics(s).stay, 60);
 assert.equal(D.residents.length, 8);
-assert.equal(D.cards.filter(c => !c.actionOption).length, 11);
+assert.equal(D.cards.filter(c => !c.actionOption && c.category !== 'town').length, 11);
 assert.equal(s.staffUsed, 0);
 assert.equal(E.available(s, 'cover', 'locked').ok, false);
 assert.equal(E.available(s, 'cca', 'route').ok, false);

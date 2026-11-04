@@ -10,8 +10,11 @@ for(const [zh,en]of [
  ['需要先完成居民角，再用现有空间安排相聚。','Complete the residents’ corner before using it for gatherings.'],
  ['放置位置超出这片空间的边界。','The placement is outside this space.'],
  ['走廊与坡道需要顺着现有通路放置。','Linkways and ramps must follow the existing path.'],
+ ['这张工程牌仅供案例预览。','This project card is a case preview.'],
+ ['这张牌在当前社区案例不可用。','This card is unavailable in this neighbourhood case.'],
+ ['这项工程需要顺着现有入口或通路放置。','This project must align with the existing entrance or path.'],
  ['住在这里的人','Your neighbours'],['你的行动卡','Your action cards'],['打开全部牌库','Open all cards'],['拿起一张，看看能改变什么','Pick up a card. Explore what it can change.'],['人物与地块为游戏示意','Illustrative characters and sites'],['社区观察','Neighbourhood observations'],['社区记录','Neighbourhood journal'],['地点地图','Location map'],['暂停经营','Pause the simulation'],['切换经营速度','Change simulation speed'],['三个目标与互动说明','Three goals and interactive guide'],
- ['用现有居民角安排相聚','Meet at the existing residents’ corner'],['使用已建居民角，不再扣建设费或新增人手；长者 +4、处得来 +4','Use the completed corner with no new construction cost or staff; older residents +4; community ties +4.']
+ ['用现有居民角安排相聚','Meet at the existing residents’ corner'],['使用已建居民角，不再扣建设费或新增人手；老年人 +4、处得来 +4','Use the completed corner with no new construction cost or staff; older residents +4; community ties +4.']
 ])pairs.set(zh,en);
 let source=fs.readFileSync(path.join(dist,'i18n.js'),'utf8');source=source.replace(/\n  \/\/ BEGIN APPROVED UPGRADE TRANSLATIONS[\s\S]*?\/\/ END APPROVED UPGRADE TRANSLATIONS\n/,'\n');
 const block='\n  // BEGIN APPROVED UPGRADE TRANSLATIONS\n  add(`\n'+[...pairs].map(([zh,en])=>zh+'|||'+en).join('\n').replace(/`/g,'\\`').replace(/\$\{/g,'\\${')+'\n`);\n  // END APPROVED UPGRADE TRANSLATIONS\n';
