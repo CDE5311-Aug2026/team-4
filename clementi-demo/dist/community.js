@@ -17,7 +17,7 @@
     csv:'respopagesex2026.csv',generated:'2026-09-25',
     definition:pair('新加坡公民及永久居民；不含非永久居民的外籍人口。','Singapore citizens and permanent residents; excludes foreigners who are not permanent residents.'),
     method:pair('汇总金文泰规划区9个互斥分区、男女性别及单岁年龄。原表每个单元格取整至10人，人数与比例均为按这些单元格计算的概数。','Summed across 9 mutually exclusive subzones, both sexes and single years of age. Source cells are rounded to the nearest 10; counts and percentages here are approximate aggregates.'),
-    scope:pair('这张图描述整个规划区，不是游戏里的八户居民或示意街区。','This chart describes the whole planning area, not the eight fictional households or the illustrative game neighbourhood.')
+    scope:pair('这张图描述整个规划区，不是游戏里的住户角色或示意街区。','This chart describes the whole planning area, not the fictional households or the illustrative game neighbourhood.')
   };
   // END OFFICIAL DEMOGRAPHICS
   const sources={
@@ -36,5 +36,5 @@
     ali:{id:'ali',age:29,ageBand:'25-44',name:pair('阿丽','Ali'),gender:pair('女','Woman'),role:pair('轮班护士、租户','Shift-working nurse and tenant'),home:pair('旧组屋 A · 小户型','Older Block A · small flat'),tenure:pair('近年搬来','Moved here in recent years'),family:pair('独立生活，作息随排班变化','Lives independently; her schedule follows her shifts'),routine:pair('在诊所或交通方向与家之间来回，休息时间不固定。','Travels between home and the clinic or transport connection, with changing rest times.'),evidence:pair('对应25–44岁年龄层；29岁、职业和租住经历为虚构，不能由年龄统计推得。','Connects to the 25–44 age group. Age 29, occupation and tenancy are fictional and cannot be inferred from age statistics.')}
   };
   root.CM_COMMUNITY={demographics,personas,sources,
-    disclaimer:pair('八户角色是带有研究背景的虚构人物，不对应真实住户，也不是人口比例抽样。','The eight households are fictional characters informed by context, not real residents or a proportional population sample.')};
+    disclaimer:pair('这些住户角色是带有研究背景的虚构人物，不对应真实住户，也不是人口比例抽样。','These households are fictional characters informed by context, not real residents or a proportional population sample.')};
 })(typeof window!=='undefined'?window:globalThis);

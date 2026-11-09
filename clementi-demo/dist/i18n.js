@@ -701,6 +701,14 @@ B 栋居民与换房屋主|||Block B neighbours and owners looking to move
   // END APPROVED UPGRADE TRANSLATIONS
 
   const patterns = [
+    [/^DOWNSTAIRS · 第\s*(\d+)\s*\/\s*10\s*年$/,(_,n)=>'DOWNSTAIRS · Year '+n+' / 10'],
+
+    [/^第\s*(\d+)\s*\/\s*10\s*年$/,(_,n)=>'Year '+n+' / 10'],
+    [/^第\s*(\d+)\s*年(.*)$/,(_,n,tail)=>'Year '+n+translate(tail)],
+    [/^开始第\s*(\d+)\s*年$/,(_,n)=>'Start year '+n],
+    [/^进入第\s*(\d+)\s*年$/,(_,n)=>'Start year '+n],
+    [/^(\d+)\s*项$/,(_,n)=>n+' needs'],
+
     [/^预算还差 (\d+)。预算会随时间恢复。$/, (_, n) => `You need ${n} more budget units. Budget recovers over time.`],
     [/^预算不足，需要 (\d+)。$/, (_, n) => `Not enough budget. This action needs ${n}.`],
     [/^请在地图上选择：(.*)。$/, (_, site) => `Choose on the map: ${translate(site)}.`],
@@ -730,6 +738,7 @@ B 栋居民与换房屋主|||Block B neighbours and owners looking to move
     [/^来自 (.*)$/, (_, person) => `From ${translate(person)}`],
     [/^经营 (\d\d:\d\d)$/, (_, time) => `Running ${time}`]
   ];
+  Object.entries(root.CM_YEAR_TRANSLATIONS||{}).forEach(([zh,en])=>dictionary.set(zh,en));
   let language = 'zh';
   try { const saved = root.localStorage?.getItem('downstairs-clementi-language'); if (saved === 'en' || saved === 'zh') language = saved; } catch (_) {}
   const cache = new Map();

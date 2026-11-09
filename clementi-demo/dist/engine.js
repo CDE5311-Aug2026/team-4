@@ -13,6 +13,20 @@
     s.eventSerial=Math.max(Number(s.eventSerial)||0,...s.events.map(e=>Number(e.id)||0));
     D.plots.forEach(p=>{if(!s.plots[p.id])s.plots[p.id]={cardId:null,status:p.kind==='locked'?'locked':'available',remaining:0};});
     s.issues.forEach(i=>{i.channel=channel(i.id);if(i.read==null)i.read=false;});
+    if(root.CM_NEEDS){
+      root.CM_NEEDS.ensure(s);
+      if(quietHoursAgreed(s)){
+        s.flags.quietHoursAgreed=true;s.flags.noiseResolved=true;
+        const noise=s.issues.find(i=>i.id==='noise');if(noise){delete noise.partialSupport;resolve(s,['noise']);}
+      }else if(s.flags.completed.corner||s.flags.completed.event){
+        s.flags.noiseResolved=false;s.flags.noisePartiallySupported=true;
+        const noise=s.issues.find(i=>i.id==='noise');
+        if(noise)partial(s,['noise'],'相聚机会已经增加，仍需当面约定适合学生与轮班住户的安静时段。');
+        else if(s.flags.seen_noise){s.flags.seen_noise=false;schedule(s,0,'noise');}
+      }
+      if(s.flags.careSupported)partial(s,['care','carealt'],'已获得活动、友伴、转介或住房方向的支持；正式白天照护仍需跟进。');
+      if(s.flags.childcarePartiallySupported&&!s.flags.completed.child)partial(s,['childcare'],'已获得交流或亲子支持；正式托育仍需另外落实。');
+    }
     return s;
   }
   function snapshot(s) { return {budget:s.budget,trust:s.trust,staffUsed:s.staffUsed,social:s.social,comfort:s.comfort,stay:metrics(s).stay,groups:Object.assign({},s.groups)}; }
@@ -44,11 +58,13 @@
   function log(s, text) { s.history.unshift({ time: s.time, text }); s.history = s.history.slice(0, 70); }
   function adjust(s, changes) { Object.keys(changes).forEach(k => { if (Object.prototype.hasOwnProperty.call(s.groups, k)) s.groups[k] = clamp(s.groups[k] + changes[k]); else if (k === 'trust' || k === 'social' || k === 'comfort') s[k] = clamp(s[k] + changes[k]); }); }
   function metrics(s) { return { stay: Object.values(s.groups).filter(v => v >= 68).length / 5 * 100, social: Math.round(s.social), comfort: Math.round(s.comfort) }; }
+  function quietHoursAgreed(s){return s.flags.quietHoursAgreed===true||s.residentNeeds?.actions?.['action-mediate']===true;}
   function schedule(s, delay, kind) { if (!s.queue.some(q => q.kind === kind) && !s.flags['seen_' + kind]) s.queue.push({ at: s.time + delay, kind }); }
   function openIssue(s, kind) {
     if (s.flags['seen_' + kind]) return true;
-    if ((kind==='noise'&&s.flags.noiseResolved)||(kind==='housing'&&s.flags.appealReviewed)||((kind==='care'||kind==='carealt')&&s.flags.careSupported)||(kind==='land'&&s.flags.gardenUse)||(kind==='childcare'&&s.flags.completed.child)) { s.flags['seen_'+kind]=true; return true; }
-    if (s.issues.filter(i => i.status === 'open').length >= 3) return false;
+    if ((kind==='noise'&&(root.CM_NEEDS?quietHoursAgreed(s):s.flags.noiseResolved))||(kind==='housing'&&s.flags.appealReviewed)||((kind==='care'||kind==='carealt')&&s.flags.careSupported&&!root.CM_NEEDS)||(kind==='land'&&s.flags.gardenUse)||(kind==='childcare'&&s.flags.completed.child)) { s.flags['seen_'+kind]=true; return true; }
+    // The enhanced UI limits visible prompts, not the existence of later needs.
+    if (!root.CM_NEEDS && s.issues.filter(i => i.status === 'open').length >= 3) return false;
     const templates = {
       route: ['那段没有遮的路', '陈玉英', '下雨时，陈玉英在去食阁的路上走走停停。她说：“家里还是熟悉的，就是雨天不敢走出去。”屋内安全与屋外通路是不同的问题。', [['cover','修建有盖走廊','预算 20 · 工期 55 秒；改善这段屋外路线'],['ramp','先修无障碍接驳','预算 14 · 40 秒；改善高差，但仍然会淋雨'],['ease','先处理屋内安全','预算 22 · 60 秒；屋外路线仍需安排']]],
       noise: ['楼上的年轻人', '陈玉英 / 学生 / 阿丽', '学生偶尔晚间聚会，陈玉英睡不好；轮班的阿丽也希望有可预期的安静时段。学生说，他们还不清楚楼里的生活约定。', [['mediate','约定作息并当面调解','居民信任 -3；先建立安静时段，后续仍需相处机会'],['corner','建设居民角','预算 18 · 持续人手 1；提供日常相遇空间'],['event','约一次食阁交流','预算 10 · 临时人手 1；完成后归还']]],
@@ -71,21 +87,26 @@
     const previousIndex = s.issues.findIndex(i => i.id === kind);
     if (previousIndex >= 0) s.issues[previousIndex] = renewedIssue;
     else s.issues.push(renewedIssue);
+    if(root.CM_NEEDS&&kind==='noise'&&s.flags.noisePartiallySupported&&!quietHoursAgreed(s))partial(s,[kind],'相聚机会已经增加，仍需当面约定适合学生与轮班住户的安静时段。');
+    if(root.CM_NEEDS&&['care','carealt'].includes(kind)&&s.flags.careSupported)partial(s,[kind],'已获得活动、友伴、转介或住房方向的支持；正式白天照护仍需跟进。');
+    if(root.CM_NEEDS&&kind==='childcare'&&s.flags.childcarePartiallySupported)partial(s,[kind],'已获得交流或亲子支持；正式托育仍需另外落实。');
     log(s, '新消息：' + t[0]); return true;
   }
   function resolve(s, ids) { ids.forEach(id => { const issue = s.issues.find(i => i.id === id && i.status !== 'resolved'); if (issue) { issue.status = 'resolved'; log(s, '已回应：' + issue.title); } }); }
   function pending(s, ids) { ids.forEach(id => { const i = s.issues.find(x => x.id === id && x.status === 'open'); if (i) i.status = 'pending'; }); }
+  function partial(s,ids,message){ids.forEach(id=>{const i=s.issues.find(x=>x.id===id);if(!i)return;i.partialSupport=true;i.status='open';i.age=0;i.stage=0;if(!i.body.includes(message))i.body+='\n【已获得部分支持】'+message;});}
   function create() {
     const groups = { elders: 52, owners: 48, families: 72, care: 70, renters: 78 };
     const s = { schema:2, time: 0, budget: 90, trust: 62, staffTotal: 6, staffUsed: 0, social: 62, comfort: 42, groups: groups, initialGroups: Object.assign({},groups), plots: {}, projects: [], issues: [], history: [], events:[],eventSerial:0, flags: { completed: {}, events: 0 }, vote: null, hold: 0, danger: 0, outcome: null, started: true, queue: [{at:25,kind:'noise'},{at:50,kind:'housing'},{at:110,kind:'care'},{at:145,kind:'land'},{at:180,kind:'petition'},{at:245,kind:'stall'}] };
     D.plots.forEach(p => { s.plots[p.id] = { cardId: null, status: p.id === 'locked' ? 'locked' : 'available', remaining: 0 }; });
-    openIssue(s,'route'); log(s, '你接手了这片已经有人生活的社区。先看看路上的陈玉英。'); return s;
+    openIssue(s,'route');if(root.CM_NEEDS)root.CM_NEEDS.ensure(s); log(s, '你接手了这片已经有人生活的社区。先看看路上的陈玉英。'); return s;
   }
   function available(s, cardId, plotId, placement) {
     const c = card(cardId); if (!c) return {ok:false,message:'没有找到这张牌。'};
     if (s.outcome) return {ok:false,message:'本局已结束，可以重新开始。'};
     if(c.actionOption){
       const context=actionContext(s,c);if(!context)return {ok:false,message:'暂时没有需要这项行动的情境。先观察社区或查看来信。'};
+      if(root.CM_NEEDS&&['small','refer'].includes(c.actionOption)&&s.residentNeeds?.actions?.[c.id])return {ok:false,message:'这项部分支持已经安排，仍需跟进其他实际服务。'};
       if(c.requiresCompleted&&!s.flags.completed[c.requiresCompleted])return {ok:false,message:'需要先完成居民角，再用现有空间安排相聚。'};
       if((c.actionOption==='meeting'||c.actionOption==='door')&&s.flags['vote_'+c.actionOption])return {ok:false,message:'这一轮意见征集已经完成，请尝试另一种安排。'};
       if(c.actionOption==='keep'&&s.plots.garden&&s.plots.garden.status!=='available')return {ok:false,message:'花园已有工程或设施，不能再承诺保留原状。'};
@@ -140,10 +161,18 @@
     adjust(s,c.effectChanges||{}); log(s,'完成：'+c.title+'。'+c.effects);
     if (c.id==='cover') { s.flags.routeCovered=true; resolve(s,['route']); schedule(s,7,'foodreturn'); if (s.flags.noiseResolved) schedule(s,30,'help'); }
     if (c.id==='ease') { s.flags.homeSafer=true; const i=s.issues.find(i=>i.id==='route'&&i.status!=='resolved'); if(i){i.body+='\n屋内改造已完成，但去食阁的露天路段仍然会淋雨。'; if(i.status==='pending')i.status='open';} }
-    if (c.id==='corner'||c.id==='event') { s.flags.noiseResolved=true; resolve(s,['noise']); schedule(s,30,'help'); }
+    if (c.id==='corner'||c.id==='event') {
+      if(root.CM_NEEDS&&!quietHoursAgreed(s)){s.flags.noiseResolved=false;s.flags.noisePartiallySupported=true;partial(s,['noise'],'相聚机会已经增加，仍需当面约定适合学生与轮班住户的安静时段。');}
+      else{s.flags.noiseResolved=true;resolve(s,['noise']);}
+      schedule(s,30,'help');
+    }
     if (c.id==='corner') resolve(s,['stall']);
-    if (c.id==='event') resolve(s,['childcare']);
-    if (['visits','aac','cca'].includes(c.id)) { s.flags.careSupported=true; resolve(s,['care','carealt']); }
+    if(c.id==='event'){
+      const waiting=s.issues.find(i=>i.id==='childcare'&&i.status==='pending');
+      if(root.CM_NEEDS&&waiting){s.flags.childcarePartiallySupported=true;partial(s,['childcare'],'邻里活动增进交流，但不能替代正式托育。');}
+      else if(!root.CM_NEEDS)resolve(s,['childcare']);
+    }
+    if (['visits','aac','cca'].includes(c.id)) { s.flags.careSupported=true;if(root.CM_NEEDS)partial(s,['care','carealt'],'已获得活动、友伴、转介或住房方向的支持；正式白天照护仍需跟进。');else resolve(s,['care','carealt']); }
     if(c.id==='cca'){s.flags.gardenUse='cca';resolve(s,['land']);schedule(s,18,'childcare');}
     if(c.id==='child'){s.flags.gardenUse='child';resolve(s,['land','childcare']);schedule(s,18,'carealt');}
     if(c.id==='appeal'){s.flags.appealReviewed=true;resolve(s,['housing','waiting']);schedule(s,20,'rumor');log(s,'模拟个案已受理，屋主获得后续换房支持。这不表示真实豁免获批或房屋已成交。');}
@@ -156,21 +185,22 @@
     if(s.outcome)return {ok:false,message:'本局已结束。'};
     const i=s.issues.find(x=>x.id===issueId);if(!i||i.status!=='open')return {ok:false,message:'这件事已回应或正在安排中。'};
     if(!i.options.some(o=>o.id===optionId))return {ok:false,message:'没有这个选项。'};
+    if(root.CM_NEEDS&&['small','refer'].includes(optionId)&&s.residentNeeds?.actions?.['action-'+optionId])return {ok:false,message:'这项部分支持已经安排，仍需跟进其他实际服务。'};
     const cid=card(optionId);
     if(cid){
       if(optionId==='corner'&&s.flags.completed.corner&&issueId==='stall'){adjust(s,{social:4,elders:4});resolve(s,[issueId]);log(s,'黄美兰调整营业安排，居民角接住了部分相聚需求。');return {ok:true,message:'居民角接住部分日常相聚，黄美兰可以安排更多休息。'};}
       const result=play(s,optionId,cid.land[0]||null);if(result.ok&&['stall','childcare'].includes(issueId))pending(s,[issueId]);return result;
     }
     let error;
-    if(optionId==='mediate'){if((error=spend(s,0,3)))return error;adjust(s,{social:8,renters:8});s.flags.noiseResolved=true;resolve(s,[issueId]);schedule(s,35,'help');log(s,'居民约定了安静时段；学生与轮班住户都参与了调解。');}
+    if(optionId==='mediate'){if((error=spend(s,0,3)))return error;adjust(s,{social:8,renters:8});s.flags.quietHoursAgreed=true;s.flags.noiseResolved=true;delete i.partialSupport;resolve(s,[issueId]);schedule(s,35,'help');log(s,'居民约定了安静时段；学生与轮班住户都参与了调解。');}
     else if(optionId==='extend'){if((error=spend(s,0,3)))return error;adjust(s,{owners:6});resolve(s,[issueId]);schedule(s,90,'waiting');log(s,'延长安排暂时缓解压力，90 秒后仍需要具体跟进。');}
     else if(optionId==='advice'||optionId==='advice2'){if((error=spend(s,optionId==='advice'?8:10,0)))return error;adjust(s,{owners:optionId==='advice'?10:16,trust:2});resolve(s,[issueId]);if(optionId==='advice')schedule(s,80,'waiting');else s.flags.housingAdvised=true;log(s,'拉赫曼夫妇获得了具体换房与援助咨询。');}
     else if(optionId==='accept'||optionId==='light'){adjust(s,optionId==='accept'?{social:5,elders:5,renters:5,trust:3}:{social:3,renters:3,trust:2});s.flags.neighbourHelp=true;resolve(s,[issueId]);log(s,'学生与陈玉英约好了互相联系的方式。阿丽的休息时间也得到尊重。');}
     else if(optionId==='explain'||optionId==='talk'){if((error=spend(s,optionId==='explain'?8:0,optionId==='talk'?3:0)))return error;adjust(s,optionId==='explain'?{social:7,trust:4}:{social:8});resolve(s,[issueId]);log(s,'居民讨论了个案审理程序；没有把传言当作楼栋的事实。');}
     else if(optionId==='later'){adjust(s,{owners:4});resolve(s,[issueId]);log(s,'继续跟进住房个案，社区疑问暂未通过沟通消除。');}
     else if(optionId==='keep'){if(s.plots.garden&&s.plots.garden.status!=='available')return {ok:false,message:'花园已有工程或设施，不能再承诺保留原状。'};adjust(s,{families:3,trust:2});s.flags.gardenKept=true;resolve(s,[issueId]);log(s,'街角花园暂时保留；照护和托育需求需要其他支持。');}
-    else if(optionId==='small'){if((error=spend(s,12,0)))return error;adjust(s,{families:14,social:3,trust:2});resolve(s,[issueId]);log(s,'在现有空间安排了小规模亲子支持，不能视为新建托育中心。');}
-    else if(optionId==='refer'){if((error=spend(s,12,0)))return error;adjust(s,{care:12,trust:3});s.flags.careSupported=true;resolve(s,[issueId,'care']);log(s,'照护家庭获得正式服务咨询与转介，没有新增日间照护设施。');}
+    else if(optionId==='small'){if((error=spend(s,12,0)))return error;adjust(s,{families:14,social:3,trust:2});s.flags.childcarePartiallySupported=true;if(root.CM_NEEDS)partial(s,[issueId],'已在现有空间安排亲子支持；正式托育仍需另外落实。');else resolve(s,[issueId]);log(s,'在现有空间安排了小规模亲子支持，不能视为新建托育中心。');}
+    else if(optionId==='refer'){if((error=spend(s,12,0)))return error;adjust(s,{care:12,trust:3});s.flags.careSupported=true;if(root.CM_NEEDS)partial(s,[issueId,'care'],'已获得正式服务咨询与转介；具体白天照护仍需落实。');else resolve(s,[issueId,'care']);log(s,'照护家庭获得正式服务咨询与转介，没有新增日间照护设施。');}
     else if(optionId==='support'){if((error=spend(s,10,0)))return error;adjust(s,{elders:5,social:4,trust:3});resolve(s,[issueId]);s.flags.stallSupported=true;log(s,'黄美兰可以多休息一天，熟客也保留了固定相聚时间。');}
     else if(optionId==='startvote'){s.vote={support:58,active:true,approved:false};resolve(s,[issueId]);schedule(s,1,'ballot');log(s,'邻里更新投票开始：58%。支持率独立于居民信任。');}
     else if(optionId==='defer'){adjust(s,{trust:2});resolve(s,[issueId]);s.flags.seen_petition=false;schedule(s,60,'petition');log(s,'先安排局部改善，60 秒后重新征集更新意见。');}
@@ -190,7 +220,7 @@
   function choose(s,issueId,optionId) {
     migrate(s);const before=snapshot(s),serial=s.eventSerial;
     const result=chooseInternal(s,issueId,optionId);
-    if(result.ok&&serial===s.eventSerial){const action=card('action-'+optionId);emit(s,'decision',{cardId:action?action.id:optionId,issueId,optionId},before);}
+    if(result.ok&&serial===s.eventSerial){const action=card('action-'+optionId),id=action?action.id:optionId;emit(s,'decision',{cardId:id,issueId,optionId},before);root.CM_NEEDS?.recordAction(s,id);}
     return result;
   }
   function worsen(s,i) {
@@ -213,10 +243,10 @@
       done.forEach(p=>{s.projects=s.projects.filter(x=>x!==p);complete(s,p);});
       s.queue.sort((a,b)=>a.at-b.at);
       for(let n=0;n<s.queue.length;){const q=s.queue[n];if(q.at>s.time){n++;continue;}if(openIssue(s,q.kind))s.queue.splice(n,1);else n++;}
-      s.issues.filter(i=>i.status==='open').forEach(i=>{i.age+=step;if(i.age>=(i.stage+1)*60)worsen(s,i);});
-      const m=metrics(s);if(m.stay>=68&&m.social>=70&&m.comfort>=70)s.hold+=step;else s.hold=0;
+      s.issues.filter(i=>i.status==='open'&&!i.partialSupport).forEach(i=>{i.age+=step;if(i.age>=(i.stage+1)*60)worsen(s,i);});
+      const m=metrics(s),promisesKept=!root.CM_NEEDS||root.CM_NEEDS.campaign(s).complete;if(promisesKept&&m.stay>=68&&m.social>=70&&m.comfort>=70)s.hold+=step;else s.hold=0;
       if(m.stay<25||m.social<25||m.comfort<25)s.danger+=step;else s.danger=0;
-      if(s.hold>=60){s.outcome='win';log(s,'三项目标同时稳定维持了 60 秒。本局完成。');}
+      if(s.hold>=60){s.outcome='win';log(s,root.CM_NEEDS?'出行委托已回访，三项目标同时稳定维持了 60 秒。本局完成。':'三项目标同时稳定维持了 60 秒。本局完成。');}
       else if(s.danger>=45){s.outcome='lose';log(s,'至少一项目标持续低于危险线 45 秒。社区需要重新安排支持。');}
     }
     return s;

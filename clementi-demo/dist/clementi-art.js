@@ -44,7 +44,16 @@
     return body(x, y + 21 * scale, scale, color, shirt) + head(x, y, scale, hair, skin, glasses);
   }
 
+  // Generated pixel portraits (art-pack.js) replace the hand-drawn ones when present.
+  function packedPortrait(id) {
+    const src = window.CM_ART_PACK && window.CM_ART_PACK.portraits && window.CM_ART_PACK.portraits[id];
+    if (!src) return '';
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="${escape(/^urgent-/.test(id) ? (window.CM_YEARS?.urgentInfo?.(id)?.title || '紧急情况') : (names[id] || '居民') + '（虚构角色）')}"><image href="${src}" width="72" height="72" preserveAspectRatio="xMidYMid slice" style="image-rendering:auto"/></svg>`;
+  }
+
   function portrait(id) {
+    const packed = packedPortrait(id);
+    if (packed) return packed;
     let a = rect(0, 0, 72, 72, C.paper) + rect(4, 4, 64, 64, '#e9d4ad') + rect(4, 50, 64, 18, '#a38c77');
     a += rect(5, 6, 5, 41, '#fff0ce') + rect(60, 7, 6, 40, '#d4ae82') + rect(7, 53, 59, 4, '#746958');
     switch (id) {

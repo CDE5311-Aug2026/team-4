@@ -5,6 +5,10 @@
   let sceneState = { plots: new Array(plotIds.length).fill(null), unlocked: plotIds.length-1, flags: {} };
   let currentState = null, currentOptions = {}, lastModel = null;
   let completedAt = Object.create(null);
+  let lastPlotsKey = null, lastSyncKey = null, lastRenderer = null;
+  const adapterStats = { calls: 0, forwarded: 0, plotBuilds: 0 };
+  const cards = (root.CM_DATA.cards || []).map(c => ({ id: c.id, name: c.title }));
+  const cardsById = new Map((root.CM_DATA.cards || []).map(c => [c.id, c]));
 
   function getSelection() {
     const selected = root.CM_APP && root.CM_APP.getSelection ? root.CM_APP.getSelection() : null;
@@ -12,15 +16,17 @@
     return selected && (selected.selectingCard || selected.selecting || selected.selected) || null;
   }
   function cardList() {
-    return (root.CM_DATA && root.CM_DATA.cards || []).map(function (c) { return { id: c.id, name: c.title }; });
+    return cards;
   }
   function sync(state, opts) {
     if (!state) state = root.CM_APP && root.CM_APP.getState ? root.CM_APP.getState() : currentState;
     if (!state) return;
+    adapterStats.calls++;
     currentOptions = Object.assign({}, currentOptions, opts || {});
     if (lastModel !== state) {
       lastModel = state;
       completedAt = Object.create(null);
+      lastPlotsKey = null; lastSyncKey = null; lastRenderer = null;
       sceneState = { plots: new Array(plotIds.length).fill(null), unlocked: plotIds.length-1, flags: {} };
     }
     currentState = state;
@@ -30,11 +36,15 @@
     sceneState.projects = state.projects || [];
     sceneState.issues = state.issues || [];
     sceneState.simTime = state.time || 0;
-    sceneState.plots = plotIds.map(function (id, index) {
+    const plotsKey = JSON.stringify([state.plots, state.projects]);
+    if (plotsKey !== lastPlotsKey) {
+      lastPlotsKey = plotsKey; adapterStats.plotBuilds++;
+      const projectsByPlot = new Map((state.projects || []).map(project => [project.plotId + ':' + project.cardId, project]));
+      sceneState.plots = plotIds.map(function (id, index) {
       if (root.CM_DATA.plots[index].kind==='locked') return null;
       const p = state.plots && state.plots[id];
       if (!p || !p.cardId || p.status === 'available' || p.status === 'locked') return null;
-      const project = (state.projects || []).find(function (project) { return project.plotId === id && project.cardId === p.cardId; });
+      const project = projectsByPlot.get(id + ':' + p.cardId);
       const building = p.status === 'building';
       const key = id + ':' + p.cardId;
       if (!building && completedAt[key] == null) completedAt[key] = state.time || 0;
@@ -45,12 +55,13 @@
         progress: building && project ? Math.max(0, Math.min(1, 1 - project.remaining / Math.max(1, project.total))) : building ? 0 : 1,
         builtRound: building ? null : p.completedAt == null ? completedAt[key] : p.completedAt
       };
-    });
+      });
+    }
     root.Downstairs.cards = cardList();
     const selected = Object.prototype.hasOwnProperty.call(currentOptions, 'selectingCard') ? currentOptions.selectingCard : getSelection();
-    const c = (root.CM_DATA && root.CM_DATA.cards || []).find(function (card) { return card.id === selected; });
+    const c = cardsById.get(selected);
     if (root.HDBScene && root.HDBScene.ready) {
-      root.HDBScene.sync(sceneState, {
+      const sceneOptions = {
         placed: true,
         landIndex: 0,
         view: root.HDBScene.view || 'neighborhood',
@@ -62,10 +73,15 @@
         focusIssue: currentOptions.focusIssue || null,
         language: currentOptions.language || 'zh',
         paused: currentOptions.paused !== false,
+        suspended: !!currentOptions.suspended,
         simTime: Number.isFinite(currentOptions.simTime) ? currentOptions.simTime : state.time || 0,
         placement: currentOptions.placement || {x:0,z:0,rotation:0},
         tab: 'facility'
-      });
+      };
+      const syncKey = JSON.stringify([plotsKey, state.groups, state.flags, state.eventSerial || 0, sceneOptions]);
+      if (lastRenderer === root.HDBScene && syncKey === lastSyncKey) return;
+      lastRenderer = root.HDBScene; lastSyncKey = syncKey; adapterStats.forwarded++;
+      root.HDBScene.sync(sceneState, sceneOptions);
     }
   }
   root.Downstairs = { cards: cardList() };
@@ -95,6 +111,6 @@
     sync: sync,
     focusIssue: function (id) { return root.HDBScene && root.HDBScene.focusIssue ? root.HDBScene.focusIssue(id) : false; },
     plotIds: plotIds.slice(),
-    diagnostics: function () { return root.HDBScene && root.HDBScene.diagnostics ? root.HDBScene.diagnostics() : { ready: false }; }
+    diagnostics: function () { const scene = root.HDBScene && root.HDBScene.diagnostics ? root.HDBScene.diagnostics() : { ready: false }; return Object.assign({}, scene, { adapter: Object.assign({}, adapterStats) }); }
   };
 })(typeof window !== 'undefined' ? window : globalThis);
