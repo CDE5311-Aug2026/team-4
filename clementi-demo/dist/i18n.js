@@ -739,6 +739,7 @@ B 栋居民与换房屋主|||Block B neighbours and owners looking to move
     [/^经营 (\d\d:\d\d)$/, (_, time) => `Running ${time}`]
   ];
   Object.entries(root.CM_YEAR_TRANSLATIONS||{}).forEach(([zh,en])=>dictionary.set(zh,en));
+  Object.entries(root.CM_YEAR_POLICY_ENGLISH||{}).forEach(([zh,en])=>dictionary.set(zh,en));
   let language = 'zh';
   try { const saved = root.localStorage?.getItem('downstairs-clementi-language'); if (saved === 'en' || saved === 'zh') language = saved; } catch (_) {}
   const cache = new Map();

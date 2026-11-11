@@ -245,6 +245,20 @@
   const role=P('你 · 社区调查员','You · Community investigator');
   const after=P('心事说出口了','The worry is out');
   const motive=P('有事想问你','Wants to ask you something');
-  function forCase(key,residentId){return cases[key]||cases['visit-'+residentId]||null;}
+  // The original event graph, hint objects and trust rules stay in place. Only the
+  // words come from the approved record for this household in this particular year.
+  const policyPair=text=>({zh:String(text||''),get en(){return root.CM_YEAR_POLICY_ENGLISH?.[String(text||'')]||root.CM_I18N?.t?.(text)||String(text||'');}});
+  function forCase(key,residentId,year){
+    const original=cases[key]||cases['visit-'+residentId]||null;
+    const authored=root.CM_YEAR_POLICY_CONTENT?.get?.(year,residentId);
+    if(!authored)return original;
+    const replies=(authored.questions||[]).map(q=>q.reply).filter(Boolean);
+    const quoted=replies.length?[]:(authored.dialogue||[]).flatMap(d=>[...String(d.line||'').matchAll(/“([^”]+)”/g)].map(m=>m[1]));
+    const lines=[...new Set([...replies,...quoted])].filter(line=>line!==authored.opening);
+    return {...original,title:policyPair(authored.title),open:policyPair(authored.opening),lure:P('',''),
+      care:P('先不急着定办法，您慢慢说。','No need to settle on a solution yet. Take your time.'),
+      careReply:policyPair(lines[0]||authored.opening),detail:policyPair(lines[1]||lines[0]||authored.opening),hook:P('',''),
+      authored,authoredReplies:lines};
+  }
   root.CM_YEAR_EVENTS=Object.freeze({cases,persona,close,say,tones,role,after,motive,forCase});
 })(typeof window!=='undefined'?window:globalThis);

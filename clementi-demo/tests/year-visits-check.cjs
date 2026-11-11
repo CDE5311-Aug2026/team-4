@@ -8,10 +8,10 @@ const advance=s=>{E.summarize(s);E.beginPolicies(s);for(const i of E.issues(s))E
 
 // 1. Each year 3–6 homes accept, all four counts occur, and the draw is reproducible from the save.
 const counts={3:0,4:0,5:0,6:0},reasonUse=new Set();let repeats=0,pairs=0;
-for(let seed=1;seed<=400;seed++){const s=E.create({seed});let previous=null;for(let y=1;y<=7;y++){const a=E.availability(s);assert(a.accepted.length>=3&&a.accepted.length<=6,'3–6 accept');counts[a.accepted.length]++;
+for(let seed=1;seed<=400;seed++){const s=E.create({seed});let previous=null;const term=[];for(let y=1;y<=7;y++){const a=E.availability(s);assert(a.accepted.length>=3&&a.accepted.length<=6,'3–6 accept');counts[a.accepted.length]++;term.push(a.accepted.length);
   for(const id of ids){if(a.accepted.includes(id)){assert(E.canVisit(s,id));assert.equal(E.refusal(s,id),null);}else{const r=E.refusal(s,id);assert(Number.isInteger(r.reasonIndex)&&r.reasonIndex>=0&&r.reasonIndex<C.refusals[id].length);reasonUse.add(id+r.reasonIndex);if(previous&&previous[id]!==undefined){pairs++;if(previous[id]===r.reasonIndex)repeats++;}}}
-  previous=a.reasons;advance(s);}}
-Object.entries(counts).forEach(([n,c])=>assert(c>600,'count '+n+' occurs often: '+c));
+  previous=a.reasons;advance(s);}assert(term.filter(n=>n===3).length>=1&&term.filter(n=>n===3).length<=2,'only one or two three-home years per term');assert(term.filter(n=>n===6).length>=1&&term.filter(n=>n===6).length<=2,'one or two all-open years per term');assert(term.includes(4)&&term.includes(5),'other years provide four/five-home decisions');}
+Object.entries(counts).forEach(([n,c])=>assert(c>=400,'count '+n+' occurs at least once per term: '+c));
 assert.equal(reasonUse.size,ids.length*6,'every refusal reason appears');assert.equal(repeats,0,'a home never gives the same reason two years running ('+pairs+' pairs)');
 const a1=E.availability(E.create({seed:99})),a2=E.availability(E.create({seed:99}));assert.equal(JSON.stringify(a1),JSON.stringify(a2),'same seed, same appointments');
 let s=E.create({seed:5});const before=JSON.stringify(E.availability(s));s=E.migrate(JSON.parse(JSON.stringify(s)));assert.equal(JSON.stringify(E.availability(s)),before,'appointments survive save and reload');

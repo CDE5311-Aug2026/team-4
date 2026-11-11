@@ -215,8 +215,11 @@
   let button=null,popover=null;
   function paintButton(){if(!button)return;const off=prefs.muted||prefs.music+prefs.sfx===0;if(button.dataset.icon!==String(off)){button.innerHTML=svg(off?ICON.off:ICON.on);button.dataset.icon=String(off);}const label=w('声音','Sound');button.title=label;button.setAttribute('aria-label',label+' · '+(off?w('已静音','muted'):w('开','on')));button.classList.toggle('is-muted',off);button.setAttribute('aria-expanded',String(!!popover&&!popover.hidden));if(popover&&!popover.hidden)paintPopover();}
   function paintPopover(){
+    popover.innerHTML=settingsHTML();
+  }
+  function settingsHTML(){
     const row=(k,icon,label)=>'<label class="yr-sound-row"><span class="yr-sound-ico">'+svg(icon)+'</span><span class="yr-sound-name">'+esc(label)+'</span><input type="range" min="0" max="100" step="5" value="'+Math.round(prefs[k]*100)+'" data-sound-volume="'+k+'" aria-label="'+esc(label)+'"><output>'+Math.round(prefs[k]*100)+'</output></label>';
-    popover.innerHTML='<div class="yr-sound-head"><strong>'+esc(w('声音','Sound'))+'</strong><button type="button" class="yr-sound-mute'+(prefs.muted?' is-on':'')+'" data-sound-mute data-sound-off aria-pressed="'+prefs.muted+'">'+svg(prefs.muted?ICON.off:ICON.on)+'<span>'+esc(prefs.muted?w('已静音','Muted'):w('静音','Mute'))+'</span></button></div>'+row('music',ICON.music,w('音乐','Music'))+row('sfx',ICON.fx,w('音效','Effects'));
+    return '<div class="yr-sound-settings"><div class="yr-sound-head"><strong>'+esc(w('声音','Sound'))+'</strong><button type="button" class="yr-sound-mute'+(prefs.muted?' is-on':'')+'" data-sound-mute data-sound-off aria-pressed="'+prefs.muted+'">'+svg(prefs.muted?ICON.off:ICON.on)+'<span>'+esc(prefs.muted?w('已静音','Muted'):w('静音','Mute'))+'</span></button></div>'+row('music',ICON.music,w('音乐','Music'))+row('sfx',ICON.fx,w('音效','Effects'))+'</div>';
   }
   function place(){if(!popover||popover.hidden||!button)return;const r=button.getBoundingClientRect(),wd=popover.offsetWidth||260;popover.style.top=Math.round(r.bottom+8)+'px';popover.style.left=Math.round(Math.max(8,Math.min(root.innerWidth-wd-8,r.right-wd)))+'px';}
   function toggle(show){if(!popover){popover=doc.createElement('div');popover.className='yr-sound-pop';popover.hidden=true;popover.setAttribute('role','dialog');popover.dataset.i18nIgnore='';doc.body.appendChild(popover);
@@ -232,8 +235,9 @@
   doc.addEventListener('click',e=>{if(!popover||popover.hidden)return;const path=e.composedPath?.()||[e.target];if(!path.includes(popover)&&!path.includes(button))toggle(false);});
   doc.addEventListener('keydown',e=>{if(e.key==='Escape'&&popover&&!popover.hidden){toggle(false);button?.focus();}});
   root.addEventListener?.('resize',place);root.addEventListener?.('localechange',paintButton);
-  if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',mountButton);else mountButton();
-  root.setInterval(mountButton,1000);
+  if(!root.CM_YEAR_APP){if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',mountButton);else mountButton();root.setInterval(mountButton,1000);}
+  doc.addEventListener('input',e=>{if(!e.target.closest?.('#modal .yr-sound-settings'))return;const k=e.target.dataset?.soundVolume;if(!['music','sfx'].includes(k))return;set({[k]:Number(e.target.value)/100});if(e.target.nextElementSibling)e.target.nextElementSibling.textContent=e.target.value;});
+  doc.addEventListener('click',e=>{const control=e.target.closest?.('#modal .yr-sound-settings [data-sound-mute]');if(!control)return;set({muted:!prefs.muted});if(!prefs.muted)unlock();const panel=control.closest('.yr-sound-settings');if(panel)panel.outerHTML=settingsHTML();});
 
   // Renders a piece of music, or a list of effects, offline — used to check levels without playing aloud.
   async function render(what,seconds=12){
@@ -245,6 +249,6 @@
       return await ctx.startRendering();}
     finally{({ctx,out,musicBus,sfxBus,verb,verbIn,noise}=saved);}
   }
-  root.CM_SOUND={play,render,scene:name=>setScene(name),current:()=>sceneName||wanted,prefs:()=>({...prefs}),set,unlocked:()=>unlocked,running:()=>ctx?.state==='running',
+  root.CM_SOUND={play,render,settingsHTML,scene:name=>setScene(name),current:()=>sceneName||wanted,prefs:()=>({...prefs}),set,unlocked:()=>unlocked,running:()=>ctx?.state==='running',
     scenes:()=>Object.keys(SCENES),effects:()=>Object.keys(FX),played:()=>played.slice(),_seed(fn){rnd=fn;}};
 })(typeof window!=='undefined'?window:globalThis);
