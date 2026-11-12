@@ -1,0 +1,12 @@
+/* Urgent situations drawn over the map */
+#world-scene .yr-weather{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;animation:yr-weather-in 1.6s ease-out both}
+#world-scene .yr-weather[hidden]{display:none}
+#world-scene .yr-weather canvas{position:absolute;inset:0;width:100%;height:100%}
+#world-scene .yr-weather[data-fx~="haze"]{backdrop-filter:saturate(.55) blur(1.2px);-webkit-backdrop-filter:saturate(.55) blur(1.2px)}
+#world-scene .yr-weather[data-fx~="flood"]{backdrop-filter:saturate(.75) brightness(.86);-webkit-backdrop-filter:saturate(.75) brightness(.86)}
+#world-scene .yr-weather[data-fx~="heat"]{backdrop-filter:saturate(1.25) contrast(1.05);-webkit-backdrop-filter:saturate(1.25) contrast(1.05)}
+.yr-weather-tags{position:absolute;top:96px;left:50%;transform:translateX(-50%);display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.yr-weather-tags span{padding:4px 12px;border:1px solid #ff8f7d99;border-radius:99px;background:#3a1f1fd9;color:#ffd9cf;font-size:12.5px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
+.yr-weather-tags span::before{content:"⚠ ";color:#ffb27a}
+@keyframes yr-weather-in{from{opacity:0}to{opacity:1}}
+@media(max-width:640px){.yr-weather-tags{top:132px}}

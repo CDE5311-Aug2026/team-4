@@ -1,0 +1,6 @@
+{
+  "name": "downstairs-clementi",
+  "private": true,
+  "description": "楼下 Downstairs · 金文泰：静态游戏页 + DeepSeek 对话代理（Vercel）",
+  "engines": { "node": "22.x" }
+}

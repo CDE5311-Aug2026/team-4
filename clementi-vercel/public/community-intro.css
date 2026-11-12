@@ -1,0 +1,91 @@
+/* Only the opening card arrangement and the evidence reader. */
+#entry-flow .improved-details{width:min(1440px,100%)}
+.flow-community-layout{grid-template-columns:minmax(0,1.05fr) minmax(0,.9fr) minmax(0,1.15fr);gap:16px;align-items:stretch;margin-top:24px}
+.flow-community-layout>.flow-research-panel,.flow-community-layout>.flow-demographics,.flow-community-layout>.flow-neighbourhood-people{height:100%;margin:0;padding:18px;min-width:0}
+.flow-community-layout>.flow-research-panel{display:flex;flex-direction:column}
+.flow-community-layout .flow-detail-tabs{margin:3px 0 16px;gap:5px}
+.flow-community-layout .flow-detail-tab{padding:8px 5px;min-height:40px;font-size:12px;gap:5px}
+.flow-community-layout .flow-detail-tab>span{font-size:16px}
+.flow-community-layout .flow-demographic-foot .flow-button{white-space:nowrap;flex-shrink:0}
+.flow-community-tab{display:flex;flex:1;flex-direction:column;min-height:0}
+.flow-context-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:13px}
+.flow-context-choice{border:1px solid #b5b49b55;border-radius:4px;background:#1e3049;color:#cfd9e0;min-width:0;min-height:37px;padding:7px 8px;font:inherit;font-size:12px;line-height:1.55;text-align:left;overflow-wrap:break-word}
+.flow-context-choice:hover{border-color:#e0c58e}
+.flow-context-choice.selected{border-color:#e5c48b;background:#594f43;color:#ffe1ae}
+.flow-context-options.is-timeline{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;padding:0 0 4px;position:relative}
+.flow-context-options.is-timeline:before{content:"";position:absolute;height:2px;background:#b9aa795e;top:8px;left:16%;right:16%}
+.is-timeline .flow-context-choice{border:0;border-radius:0;padding:0 3px 5px;background:transparent;text-align:center;position:relative;min-height:43px;font-size:11px}
+.is-timeline .flow-context-choice>i{display:block;width:12px;height:12px;margin:3px auto 9px;background:#26394e;border:2px solid #8b978f;position:relative;z-index:1}
+.is-timeline .flow-context-choice.selected>i{background:#e8c78c;border-color:#ffe5aa;box-shadow:0 0 0 3px #eac78a22}
+.is-timeline .flow-context-choice.selected{color:#ffe1ae}
+.flow-context-story{display:flex;flex-direction:column;flex:1;min-width:0}
+.flow-context-art{position:relative;padding:9px 12px 20px;border:1px solid #b5b69d38;border-radius:5px;background:#142b3d;overflow:hidden;margin-bottom:15px}
+.flow-context-art>svg{display:block;width:100%;height:132px;image-rendering:pixelated}
+.flow-context-art>span{position:absolute;bottom:6px;right:9px;font-size:9px;color:#aebdbb;line-height:1.4;letter-spacing:.3px}
+#entry-flow .flow-context-story h3{margin:0 0 8px;font:600 16px/1.6 Georgia,"SimSun",serif;color:#f3d7a7;overflow-wrap:break-word}
+#entry-flow .flow-context-story>p{font-size:13px;line-height:1.9;color:#d3dce4}
+.flow-context-metrics{display:flex;gap:8px;margin:14px 0 0;padding:12px 0 0;border-top:1px solid #b7b29833}
+.flow-context-metrics>div{display:flex;flex:1;flex-direction:column-reverse;justify-content:flex-end;gap:5px;min-width:0}
+.flow-context-metrics dt{font-size:10px;line-height:1.7;color:#bdcbd6}
+.flow-context-metrics dd{font-size:clamp(15px,1.3vw,21px);line-height:1.5;margin:0;color:#f2d194;font-weight:650;font-variant-numeric:tabular-nums}
+.flow-context-sources{display:flex;gap:4px 15px;flex-wrap:wrap;align-items:flex-end;margin-top:auto;padding-top:18px}
+.flow-context-sources .flow-source-link{margin:0;line-height:1.8;color:#ecd09b;text-decoration:underline;text-underline-offset:4px}
+#entry-flow .flow-context-note{font-size:10px;line-height:1.8;color:#aabcc7;margin-top:12px;padding-top:10px;border-top:1px solid #b7b29822}
+
+/* Sources use the same gold, underlined, outward-arrow language as persona sources. */
+#modal.evidence-modal[open]{display:flex;flex-direction:column;max-height:88svh}
+#modal.evidence-modal #modal-content{display:flex;flex-direction:column;min-height:0;width:100%}
+#modal.evidence-modal .modal-top{flex:0 0 auto}
+#modal.evidence-modal .modal-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
+.yr-evidence-page{color:#d5dfe3}
+.yr-evidence-back{display:inline-flex;align-items:center;gap:7px;margin:0 0 18px;padding:0;border:0;background:transparent;color:#f1d395;font:inherit;font-size:13px;line-height:1.7;cursor:pointer}
+.yr-evidence-back .ui-icon{width:17px;height:17px}
+.yr-evidence-intro{font-size:14px;line-height:1.9;max-width:none;width:100%}
+.yr-evidence-group{border:1px solid #afae8d4a;border-radius:8px;background:#ffffff04;margin:10px 0;overflow:hidden}
+.yr-evidence-group summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 17px;list-style:none;cursor:pointer;color:#f2d39a;font-size:15px;line-height:1.7;font-weight:600}
+.yr-evidence-group summary::-webkit-details-marker{display:none}
+.yr-evidence-group summary .ui-icon{width:17px;height:17px;flex:0 0 17px;transition:transform .15s}
+.yr-evidence-group[open] summary .ui-icon{transform:rotate(180deg)}
+.yr-evidence-group summary:hover{background:#ffffff08}
+.yr-evidence-group summary:focus-visible,.yr-evidence-back:focus-visible,.yr-evidence-sources a:focus-visible{outline:2px solid #ffe1a0;outline-offset:-3px}
+.yr-evidence-detail{padding:0 17px 17px}
+.yr-evidence-detail .yr-evidence-mapping{font-size:11px;color:#aebfc8;margin-bottom:9px;line-height:1.7}
+.yr-evidence-detail>p{font-size:13px;line-height:1.9;margin-bottom:12px}
+.yr-evidence-sources{display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+.yr-evidence-sources a{color:#ecd09b;font-size:12px;line-height:1.8;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.yr-evidence-sources a>span{display:inline-block;margin-left:5px;text-decoration:none}
+.yr-evidence-footer{padding-top:14px;margin-top:19px;border-top:1px solid #b7b29833;color:#aebfc8;font-size:11px;line-height:1.9}
+
+@media(min-width:1101px){
+  .flow-community-layout>.flow-demographics,.flow-community-layout>.flow-neighbourhood-people{display:flex;flex-direction:column}
+  .flow-community-layout>.flow-demographics>.flow-evidence,.flow-community-layout>.flow-neighbourhood-people>.flow-persona-detail{margin-top:auto}
+  .flow-community-layout .flow-demographic-foot{margin-bottom:10px}
+}
+@media(max-width:1100px) and (min-width:801px){
+  .flow-community-layout{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .flow-community-layout>.flow-research-panel{grid-column:1/-1}
+  .flow-community-layout>.flow-demographics,.flow-community-layout>.flow-neighbourhood-people{height:auto}
+  .flow-community-layout .flow-community-tab{display:grid;grid-template-columns:210px minmax(0,1fr);column-gap:22px;align-items:start}
+  .flow-community-layout .flow-context-options{grid-column:1;grid-row:1}
+  .flow-community-layout .flow-context-story{grid-column:2;grid-row:1/3;display:block;min-height:205px}
+  .flow-community-layout .flow-context-art{float:right;width:40%;margin:0 0 12px 18px}
+  .flow-community-layout .flow-context-art>svg{height:120px}
+  .flow-community-layout .flow-context-sources{clear:both}
+  .flow-community-layout .flow-context-note{grid-column:1;grid-row:2}
+  .flow-community-layout .flow-persona-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:800px){
+  .flow-community-layout{grid-template-columns:minmax(0,1fr);gap:15px;margin-top:20px}
+  .flow-community-layout>.flow-research-panel,.flow-community-layout>.flow-demographics,.flow-community-layout>.flow-neighbourhood-people{height:auto;padding:16px}
+  .flow-community-layout .flow-context-art>svg{height:150px}
+  .flow-community-layout .flow-context-sources{margin-top:0}
+  .flow-context-metrics dd{font-size:20px}
+}
+@media(max-width:520px){
+  .flow-community-layout>.flow-research-panel,.flow-community-layout>.flow-demographics,.flow-community-layout>.flow-neighbourhood-people{padding:13px}
+  .flow-context-art>svg{height:128px!important}
+  .flow-context-metrics dd{font-size:17px}
+  .yr-evidence-group summary{padding:12px;font-size:14px}
+  .yr-evidence-detail{padding:0 12px 14px}
+}
+@media(prefers-reduced-motion:reduce){.yr-evidence-group summary .ui-icon{transition:none}}
