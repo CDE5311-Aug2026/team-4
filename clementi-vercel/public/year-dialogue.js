@@ -20,9 +20,9 @@
   const foundIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6v3H9z"/><path d="M15 5.5h2.5A1.5 1.5 0 0 1 19 7v12.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5V7a1.5 1.5 0 0 1 1.5-1.5H9"/><path d="m8.5 13.5 2.5 2.5 4.5-5"/></svg>';
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let hooks,initialized=false,active=null,generation=0;
-  // Served by 启动游戏.cmd (local server): DeepSeek with the local key is the default from the first moment.
-  // Opened as a file, there is no local server, so offline dialogue remains the default.
-  const served=/^https?:$/.test(root.location?.protocol||'')&&/^(127\.0\.0\.1|localhost)$/.test(root.location?.hostname||'');
+  // HTTP(S) builds use the same-origin DeepSeek proxy, including Vercel.
+  // Standalone files use offline dialogue because they have no server proxy.
+  const served=/^https?:$/.test(root.location?.protocol||'');
   let settings={provider:served?'local':'mock'};
   const localStatus={checked:!served,configured:false,ok:false,error:''};
   // A real check: the local server sends DeepSeek one tiny request and reports the plain reason if it fails.
